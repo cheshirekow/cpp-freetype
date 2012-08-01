@@ -106,7 +106,7 @@ class Library
          *  @note       See the discussion of reference counters in the
          *              description of FT_Reference_Library.
          */
-        //static Library create( Memory memory, Error_t& error );
+        static Library create( Memory memory, Error_t& error );
 
         /// Add the set of default drivers to a given library object.
         /**

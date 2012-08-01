@@ -26,8 +26,110 @@
 
 #include <cppfreetype/Memory.h>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_MODULE_H
+
+extern "C"
+{
+
+void* cpp_freetype_alloc( FT_Memory memory, long size );
+
+void  cpp_freetype_free( FT_Memory memory, void* block );
+
+void* cpp_freetype_realloc( FT_Memory memory,
+                            long cur_size,
+                            long new_size,
+                            void* block);
+
+}
+
+
 namespace freetype
 {
+
+struct MemorySlots
+{
+    AllocFunc_t     alloc;
+    FreeFunc_t      free;
+    ReallocFunc_t   realloc;
+};
+
+}
+
+void* cpp_freetype_alloc( FT_Memory memory, long size )
+{
+    using namespace freetype;
+    MemorySlots* slots = (MemorySlots*)( memory->user );
+    return (slots->alloc)(size);
+}
+
+void  cpp_freetype_free( FT_Memory memory, void* block )
+{
+    using namespace freetype;
+    MemorySlots* slots = (MemorySlots*)( memory->user );
+    return (slots->free)(block);
+}
+
+void* cpp_freetype_realloc( FT_Memory memory,
+                            long cur_size,
+                            long new_size,
+                            void* block)
+{
+    using namespace freetype;
+    MemorySlots* slots = (MemorySlots*)( memory->user );
+    return (slots->realloc)(cur_size, new_size, block);
+}
+
+namespace freetype
+{
+
+
+Memory::Memory( void* ptr )
+{
+    m_ptr = ptr;
+}
+
+void* Memory::get_ptr()
+{
+    return m_ptr;
+}
+
+void Memory::destroy()
+{
+    if(m_ptr)
+    {
+        FT_Memory       memory  = (FT_Memory)m_ptr;
+        MemorySlots*    slots   = (MemorySlots*)memory->user;
+        delete memory;
+        delete slots;
+        m_ptr = 0;
+    }
+}
+
+
+Memory Memory::create(  AllocFunc_t     alloc,
+                        FreeFunc_t      free,
+                        ReallocFunc_t   realloc )
+{
+    MemorySlots* slots = new MemorySlots;
+    slots->alloc    = alloc;
+    slots->free     = free;
+    slots->realloc  = realloc;
+
+    FT_Memory memory = new FT_MemoryRec_;
+    memory->user    = (void*)slots;
+    memory->alloc   = &cpp_freetype_alloc;
+    memory->free    = &cpp_freetype_free;
+    memory->realloc = &cpp_freetype_realloc;
+
+    return Memory(memory);
+}
+
+
+
+
+
 
 
 } // namespace freetype 

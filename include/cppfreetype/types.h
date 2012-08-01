@@ -208,7 +208,33 @@ namespace glyphformat
 typedef sigc::slot<void,void*>  GenericFinalizer_t;
 
 
+/// a function used to allocate bytes from memory
+/**
+ *  Input parameter will be number of bytes requested and the function should
+ *  return a pointer to a memory block or 0 in case of failure
+ */
+typedef sigc::slot<void*,long>  AllocFunc_t;
 
+/// a function used to release a given block of memory
+/**
+ *  Input parameter is a pointer to a block of memory returned from
+ *  the associated allocator
+ */
+typedef sigc::slot<void,void*>  FreeFunc_t;
+
+/// a function used to re-allocate a given block of memory
+/**
+ *  Parameters are:
+ *  # \p cur_size   the block's current size in bytes
+ *  # \p new_size   the block's requested size
+ *  # \p block      the block's current address
+ *
+ *  Return value is the new block address, or 0 in the case of memory
+ *  shortage
+ *
+ *  @note   In case of error the old block must still be available
+ */
+typedef sigc::slot<void*,long,long,void*>  ReallocFunc_t;
 
 
 

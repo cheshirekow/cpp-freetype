@@ -75,6 +75,13 @@ namespace freetype
         return (m_ptr != 0);
     }
 
+    Library Library::create( Memory memory, Error_t& error )
+    {
+        FT_Library ptr;
+        error = FT_New_Library( (FT_Memory) memory.get_ptr(), &ptr );
+        return Library( (void*) ptr );
+    }
+
     void Library::add_default_modules()
     {
         FT_Add_Default_Modules( (FT_Library) m_ptr );
