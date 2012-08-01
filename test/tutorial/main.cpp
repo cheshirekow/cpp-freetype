@@ -48,22 +48,26 @@ int main( int argc, char** argv )
         return 1;
     }
 
-    ft::Face face     = freetype.new_face( argv[1], 0, result );
-
-    if(result)
+    // artificial scope... we dont want a dangling Face pointer hanging
+    // around trying to free itself after we call ft::done
     {
-        std::cerr << "Freetype failed to read " << argv[1]
-                  << " as a font file " << std::endl;
-        return 1;
-    }
+        ft::Face face     = freetype.new_face( argv[1], 0, result );
 
-    std::cout << "Some info about the font: "
-      << "\n      filepath: " << argv[1]
-      << "\n        family: " << face.family_name()
-      << "\n      n glyphs: " << face.num_glyphs()
-      << "\n  units per EM: " << face.units_per_EM()
-      << "\n"
-      << std::endl;
+        if(result)
+        {
+            std::cerr << "Freetype failed to read " << argv[1]
+                      << " as a font file " << std::endl;
+            return 1;
+        }
+
+        std::cout << "Some info about the font: "
+          << "\n      filepath: " << argv[1]
+          << "\n        family: " << face.family_name()
+          << "\n      n glyphs: " << face.num_glyphs()
+          << "\n  units per EM: " << face.units_per_EM()
+          << "\n"
+          << std::endl;
+    }
 
     result = ft::done(freetype);
     return 0;
