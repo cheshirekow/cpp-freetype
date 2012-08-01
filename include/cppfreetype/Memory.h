@@ -14,33 +14,27 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with Fontconfigmm.  If not, see <http://www.gnu.org/licenses/>.
+ *  along with cppfreetype.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *  \file   cppfreetype.cpp
+ *  \file   Memory.h
  *
  *  \date   Aug 1, 2012
  *  \author Josh Bialkowski (jbialk@mit.edu)
  *  \brief  
  */
 
-
-#include <ft2build.h>
-#include FT_FREETYPE_H
+#ifndef CPPFREETYPE_MEMORY_H_
+#define CPPFREETYPE_MEMORY_H_
 
 namespace freetype
 {
-    const unsigned int MAJOR = FREETYPE_MAJOR;
-    const unsigned int MINOR = FREETYPE_MINOR;
-    const unsigned int PATCH = FREETYPE_PATCH;
 
+class Memory
+{
 
+};
 
-}
+} // namespace freetype 
 
-
-
-
-
-
-
+#endif // MEMORY_H_

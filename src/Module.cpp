@@ -17,30 +17,17 @@
  *  along with Fontconfigmm.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *  \file   cppfreetype.cpp
+ *  \file   Module.cpp
  *
  *  \date   Aug 1, 2012
  *  \author Josh Bialkowski (jbialk@mit.edu)
  *  \brief  
  */
 
-
-#include <ft2build.h>
-#include FT_FREETYPE_H
+#include <cppfreetype/Module.h>
 
 namespace freetype
 {
-    const unsigned int MAJOR = FREETYPE_MAJOR;
-    const unsigned int MINOR = FREETYPE_MINOR;
-    const unsigned int PATCH = FREETYPE_PATCH;
 
 
-
-}
-
-
-
-
-
-
-
+} // namespace freetype 

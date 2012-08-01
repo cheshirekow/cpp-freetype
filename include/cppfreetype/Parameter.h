@@ -14,33 +14,40 @@
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with Fontconfigmm.  If not, see <http://www.gnu.org/licenses/>.
+ *  along with cppfreetype.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *  \file   cppfreetype.cpp
+ *  \file   Parameter.h
  *
  *  \date   Aug 1, 2012
  *  \author Josh Bialkowski (jbialk@mit.edu)
  *  \brief  
  */
 
+#ifndef CPPFREETYPE_PARAMETER_H_
+#define CPPFREETYPE_PARAMETER_H_
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
+#include <cppfreetype/types.h>
 
 namespace freetype
 {
-    const unsigned int MAJOR = FREETYPE_MAJOR;
-    const unsigned int MINOR = FREETYPE_MINOR;
-    const unsigned int PATCH = FREETYPE_PATCH;
 
+/// A simple structure used to pass more or less generic parameters to
+/// FT_Open_Face.
+/**
+ *  The ID and function of parameters are driver-specific. See the various
+ *  FT_PARAM_TAG_XXX flags for more information.
+ */
+class Parameter
+{
+    private:
+        void* m_ptr;
 
+    public:
+        ULong_t&    tag();  ///< four-byte identification tag
+        Pointer_t&  data(); ///< pointer to parameter data
+};
 
-}
+} // namespace freetype 
 
-
-
-
-
-
-
+#endif // PARAMETER_H_
