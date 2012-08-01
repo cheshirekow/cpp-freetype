@@ -26,8 +26,86 @@
 
 #include <cppfreetype/Library.h>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_MODULE_H
+
 namespace freetype
 {
+    Library::Library( void* ptr, bool reference )
+    {
+        m_ptr = ptr;
+        if(reference)
+            FT_Reference_Library( (FT_Library)m_ptr );
+    }
+
+    Library::Library( const Library& other )
+    {
+        if(m_ptr)
+            FT_Done_Library( (FT_Library)m_ptr );
+        m_ptr = other.m_ptr;
+        if(m_ptr)
+            FT_Reference_Library( (FT_Library)m_ptr );
+    }
+
+    Library& Library::operator=( const Library& other )
+    {
+        if(m_ptr)
+            FT_Done_Library( (FT_Library)m_ptr );
+        m_ptr = other.m_ptr;
+        if(m_ptr)
+            FT_Reference_Library( (FT_Library)m_ptr );
+
+        return *this;
+    }
+
+    Library::~Library()
+    {
+        if(m_ptr)
+            FT_Done_Library( (FT_Library)m_ptr );
+    }
+
+    void* Library::get_ptr()
+    {
+        return m_ptr;
+    }
+
+    bool Library::is_valid()
+    {
+        return (m_ptr != 0);
+    }
+
+    void Library::add_default_modules()
+    {
+        FT_Add_Default_Modules( (FT_Library) m_ptr );
+    }
+
+    Module Library::get_module( const char* module_name )
+    {
+        return Module( (void*)
+            FT_Get_Module( (FT_Library)m_ptr, module_name )
+        );
+    }
+
+    Error_t Library::remove_module( Module module )
+    {
+        return FT_Remove_Module(
+                (FT_Library)m_ptr,
+                (FT_Module) module.get_ptr() );
+    }
+
+    Face Library::new_face( const char* filepath,
+                            Long_t      face_index,
+                            Error_t&    error )
+    {
+        FT_Face ptr;
+        error = FT_New_Face( (FT_Library)m_ptr, filepath, face_index, &ptr );
+        return Face(ptr);
+    }
+
+
+
+
 
 
 

@@ -33,119 +33,6 @@ namespace freetype
 {
 
 
-/// A list of bit flags used in the ‘face_flags’ field of the FT_FaceRec
-/// structure. They inform client applications of properties of the
-/// corresponding face.
-namespace faceflag
-{
-    /// Indicates that the face contains outline glyphs. This doesn't prevent
-    /// bitmap strikes, i.e., a face can have both this and and
-    /// FT_FACE_FLAG_FIXED_SIZES set.
-    const ULong_t   SCALABLE            = ( 1L <<  0 );
-
-    /// Indicates that the face contains bitmap strikes. See also the
-    /// ‘num_fixed_sizes’ and ‘available_sizes’ fields of FT_FaceRec.
-    const ULong_t   FIXED_SIZES         = ( 1L <<  1 );
-
-    /// Indicates that the face contains fixed-width characters (like Courier,
-    /// Lucido, MonoType, etc.).
-    const ULong_t   FIXED_WIDTH         = ( 1L <<  2 );
-
-    /// Indicates that the face uses the ‘sfnt’ storage scheme. For now, this
-    /// means TrueType and OpenType.
-    const ULong_t   SFNT                = ( 1L <<  3 );
-
-    /// Indicates that the face contains horizontal glyph metrics. This should
-    /// be set for all common formats.
-    const ULong_t   HORIZONTAL          = ( 1L <<  4 );
-
-    /// Indicates that the face contains vertical glyph metrics. This is only
-    /// available in some formats, not all of them.
-    const ULong_t   VERTICAL            = ( 1L <<  5 );
-
-    /// Indicates that the face contains kerning information. If set, the
-    /// kerning distance can be retrieved through the function FT_Get_Kerning.
-    /// Otherwise the function always return the vector (0,0). Note that
-    /// FreeType doesn't handle kerning data from the ‘GPOS’ table (as present
-    /// in some OpenType fonts).
-    const ULong_t   KERNING             = ( 1L <<  6 );
-
-    /// THIS FLAG IS DEPRECATED. DO NOT USE OR TEST IT.
-    const ULong_t   FAST_GLYPHS         = ( 1L <<  7 );
-
-    /// Indicates that the font contains multiple masters and is capable of
-    /// interpolating between them. See the multiple-masters specific API for
-    /// details.
-    const ULong_t   MULTIPLE_MASTERS    = ( 1L <<  8 );
-
-    /// Indicates that the font contains glyph names that can be retrieved
-    /// through FT_Get_Glyph_Name. Note that some TrueType fonts contain
-    /// broken glyph name tables. Use the function FT_Has_PS_Glyph_Names when
-    /// needed.
-    const ULong_t   GLYPH_NAMES         = ( 1L <<  9 );
-
-    /// Used internally by FreeType to indicate that a face's stream was
-    /// provided by the client application and should not be destroyed when
-    /// FT_Done_Face is called. Don't read or test this flag.
-    const ULong_t   EXTERNAL_STREAM     = ( 1L << 10 );
-
-    /// Set if the font driver has a hinting machine of its own. For example,
-    /// with TrueType fonts, it makes sense to use data from the SFNT ‘gasp’
-    /// table only if the native TrueType hinting engine (with the bytecode
-    /// interpreter) is available and active.
-    const ULong_t   HINTER              = ( 1L << 11 );
-
-    /// Set if the font is CID-keyed. In that case, the font is not accessed
-    /// by glyph indices but by CID values. For subsetted CID-keyed fonts this
-    /// has the consequence that not all index values are a valid argument to
-    /// FT_Load_Glyph. Only the CID values for which corresponding glyphs in
-    /// the subsetted font exist make FT_Load_Glyph return successfully; in
-    /// all other cases you get an ‘FT_Err_Invalid_Argument’ error.
-    ///
-    /// Note that CID-keyed fonts which are in an SFNT wrapper don't have
-    /// this flag set since the glyphs are accessed in the normal way (using
-    /// contiguous indices); the ‘CID-ness’ isn't visible to the application.
-    const ULong_t   CID_KEYED           = ( 1L << 12 );
-
-    /// Set if the font is ‘tricky’, this is, it always needs the font
-    /// format's native hinting engine to get a reasonable result. A typical
-    /// example is the Chinese font ‘mingli.ttf’ which uses TrueType bytecode
-    /// instructions to move and scale all of its subglyphs.
-    ///
-    /// It is not possible to autohint such fonts using FT_LOAD_FORCE_AUTOHINT;
-    /// it will also ignore FT_LOAD_NO_HINTING. You have to set both
-    /// FT_LOAD_NO_HINTING and FT_LOAD_NO_AUTOHINT to really disable hinting;
-    /// however, you probably never want this except for demonstration
-    /// purposes.
-    ///
-    /// Currently, there are about a dozen TrueType fonts in the list of
-    /// tricky fonts; they are hard-coded in file ‘ttobjs.c’.
-    const ULong_t   TRICKY              = ( 1L << 13 );
-}
-
-
-/// A list of bit-flags used to indicate the style of a given face. These are
-/// used in the ‘style_flags’ field of FT_FaceRec.
-/**
- *  @note   The style information as provided by FreeType is very basic. More
- *          details are beyond the scope and should be done on a higher level
- *          (for example, by analyzing various fields of the ‘OS/2’ table in
- *          SFNT based fonts).
- */
-namespace styleflag
-{
-    /// Indicates that a given face style is italic or oblique.
-    const UInt_t    ITALIC  = ( 1 << 0 );
-
-    /// Indicates that a given face is bold.
-    const UInt_t    BOLD    = ( 1 << 1 );
-
-
-}
-
-
-
-
 
 /// A handle to a given typographic face object. A face object models a given
 /// typeface, in a given style.
@@ -181,7 +68,7 @@ class Face
          * @param[in]   ptr         underlying FT_FACE pointer
          * @param[in]   reference   if true, increments the reference count
          */
-        Face( void* ptr, bool reference=true );
+        Face( void* ptr, bool reference=false );
 
         /// copy constructor, increases reference count of underlying FT_FACE
         /// object
@@ -310,7 +197,7 @@ class Face
         bool has_glyph_names();
         bool has_multiple_masters();
         bool is_cid_keyed();
-        bool is_trickey();
+        bool is_tricky();
 
 
 
@@ -326,6 +213,245 @@ class Face
          *  @return FreeType error code. 0 means success.
          */
         Error_t select_size( Int_t strike_index );
+
+        /// Calls FT_Request_Size to request the nominal size (in points)
+        /**
+         *  @param[in]  char_width          The nominal width, in 26.6
+         *                                  fractional points.
+         *  @param[in]  char_height         The nominal height, in 26.6
+         *                                  fractional points.
+         *  @param[in]  horz_resolution     The horizontal resolution in dpi.
+         *  @param[in]  vert_resolution     The vertical resolution in dpi.
+         *
+         *  @return FreeType error code. 0 means success.
+         *
+         *  If either the character width or height is zero, it is set equal
+         *  to the other value.
+         *
+         *  If either the horizontal or vertical resolution is zero, it is set
+         *  equal to the other value.
+         *
+         *  A character width or height smaller than 1pt is set to 1pt; if
+         *  both resolution values are zero, they are set to 72dpi.
+         *
+         *  Don't use this function if you are using the FreeType cache API.
+         */
+        Error_t set_char_size(
+                        F26Dot6_t   char_width,
+                        F26Dot6_t   char_height,
+                        UInt_t      horz_resolution,
+                        UInt_t      vert_resolution );
+
+        /// This function calls FT_Request_Size to request the nominal size
+        /// (in pixels).
+        /**
+         *  @param[in]  pixel_width     The nominal width, in pixels.
+         *  @param[in]  pixel_height    The nominal height, in pixels.
+         *
+         *  @return FreeType error code. 0 means success.
+         */
+        Error_t set_pixel_sizes(
+                        UInt_t  pixel_width,
+                        UInt_t  pixel_height    );
+
+        /// A function used to load a single glyph into the glyph slot of a
+        /// face object.
+        /**
+         *  @param[in]  glyph_index     The index of the glyph in the font
+         *                              file. For CID-keyed fonts (either in
+         *                              PS or in CFF format) this argument
+         *                              specifies the CID value.
+         *  @param[in]  load_flags      A flag indicating what to load for
+         *                              this glyph. The FT_LOAD_XXX constants
+         *                              can be used to control the glyph
+         *                              loading process (e.g., whether the
+         *                              outline should be scaled, whether to
+         *                              load bitmaps or not, whether to hint
+         *                              the outline, etc).
+         *
+         *  @return FreeType error code. 0 means success.
+         *
+         *  The loaded glyph may be transformed. See FT_Set_Transform for the
+         *  details.
+         *
+         *  For subsetted CID-keyed fonts, ‘FT_Err_Invalid_Argument’ is
+         *  returned for invalid CID values (this is, for CID values which
+         *  don't have a corresponding glyph in the font). See the discussion
+         *  of the FT_FACE_FLAG_CID_KEYED flag for more details.
+         */
+        Error_t load_glyph(
+                        UInt_t  glyph_index,
+                        Int32_t load_flags );
+
+        /// A function used to load a single glyph into the glyph slot of a
+        /// face object, according to its character code.
+        /**
+         *  @param[in]  char_code   The glyph's character code, according to
+         *              the current charmap used in the face.
+         *  @param[in]  load_flags  A flag indicating what to load for this
+         *              glyph. The FT_LOAD_XXX constants can be used to
+         *              control the glyph loading process (e.g., whether the
+         *              outline should be scaled, whether to load bitmaps or
+         *              not, whether to hint the outline, etc).
+         *
+         *  @return FreeType error code. 0 means success.
+         *
+         *  This function simply calls FT_Get_Char_Index and FT_Load_Glyph.
+         */
+        Error_t load_char(
+                        ULong_t char_code,
+                        Int32_t load_flags );
+
+        /// Retrieve the ASCII name of a given glyph in a face. This only
+        /// works for those faces where FT_HAS_GLYPH_NAMES(face) returns 1.
+        /**
+         *  @param[in]  glyph_index     The glyph index.
+         *  @param[out] buffer          A pointer to a target buffer where the
+         *                              name is copied to.
+         *  @param[in]  buffer_max      The maximum number of bytes available
+         *                              in the buffer.
+         *
+         *  @return FreeType error code. 0 means success.
+         *
+         *  An error is returned if the face doesn't provide glyph names or if
+         *  the glyph index is invalid. In all cases of failure, the first
+         *  byte of ‘buffer’ is set to 0 to indicate an empty name.
+         *
+         *  The glyph name is truncated to fit within the buffer if it is too
+         *  long. The returned string is always zero-terminated.
+         *
+         *  Be aware that FreeType reorders glyph indices internally so that
+         *  glyph index 0 always corresponds to the ‘missing glyph’ (called
+         *  ‘.notdef’).
+         *
+         *  This function is not compiled within the library if the config
+         *  macro ‘FT_CONFIG_OPTION_NO_GLYPH_NAMES’ is defined in
+         *  ‘include/freetype/config/ftoptions.h’.
+         */
+        Error_t get_glyph_name(
+                        UInt_t      glyph_index,
+                        Pointer_t   buffer,
+                        UInt_t      buffer_max );
+
+        /// Retrieve the ASCII PostScript name of a given face, if available.
+        /// This only works with PostScript and TrueType fonts.
+        /**
+         *  @return A pointer to the face's PostScript name. NULL if
+         *          unavailable.
+         *  @note   The returned pointer is owned by the face and is destroyed
+         *          with it.
+         */
+        const char* get_postscript_name();
+
+        /// Select a given charmap by its encoding tag (as listed in
+        /// ‘freetype.h’).
+        /**
+         *  @param[in]  encoding   handle to the selected encoding
+         *
+         *  @return FreeType error code. 0 means success.
+         *
+         *  This function returns an error if no charmap in the face
+         *  corresponds to the encoding queried here.
+         *
+         *  Because many fonts contain more than a single cmap for Unicode
+         *  encoding, this function has some special code to select the one
+         *  which covers Unicode best (‘best’ in the sense that a UCS-4 cmap
+         *  is preferred to a UCS-2 cmap). It is thus preferable to
+         *  FT_Set_Charmap in this case.
+         */
+        Error_t select_charmap( Encoding encoding );
+
+        /// Return the glyph index of a given character code. This function
+        /// uses a charmap object to do the mapping.
+        /**
+         *  @param[in]  charcode    The character code.
+         *
+         *  @return The glyph index. 0 means ‘undefined character code’.
+         *
+         *  If you use FreeType to manipulate the contents of font files
+         *  directly, be aware that the glyph index returned by this function
+         *  doesn't always correspond to the internal indices used within the
+         *  file. This is done to ensure that value 0 always corresponds to
+         *  the ‘missing glyph’. If the first glyph is not named ‘.notdef’,
+         *  then for Type 1 and Type 42 fonts, ‘.notdef’ will be moved into
+         *  the glyph ID 0 position, and whatever was there will be moved to
+         *  the position ‘.notdef’ had. For Type 1 fonts, if there is no
+         *  ‘.notdef’ glyph at all, then one will be created at index 0 and
+         *  whatever was there will be moved to the last index -- Type 42
+         *  fonts are considered invalid under this condition.
+         */
+        UInt_t get_char_index( ULong_t charcode );
+
+        /// This function is used to return the first character code in the
+        /// current charmap of a given face. It also returns the corresponding
+        /// glyph index.
+        /**
+         *  @param[out] agindex     Glyph index of first character code.
+         *                          0 if charmap is empty.
+         *
+         *  @return  The charmap's first character code.
+         *
+         *  You should use this function with FT_Get_Next_Char to be able to
+         *  parse all character codes available in a given charmap. The code
+         *  should look like this:
+         *
+         * \code
+FT_ULong  charcode;
+FT_UInt   gindex;
+
+
+charcode = FT_Get_First_Char( face, &gindex );
+while ( gindex != 0 )
+{
+    //... do something with (charcode,gindex) pair ...
+
+    charcode = FT_Get_Next_Char( face, charcode, &gindex );
+}
+\endcode
+         *
+         *  Note that ‘*agindex’ is set to 0 if the charmap is empty. The
+         *  result itself can be 0 in two cases: if the charmap is empty or if
+         *  the value 0 is the first valid character code.
+         */
+        ULong_t get_first_char( UInt_t& agindex );
+
+        /// This function is used to return the next character code in the
+        /// current charmap of a given face following the value ‘char_code’,
+        /// as well as the corresponding glyph index.
+        /**
+         *  @param[in]  char_code   The starting character code.
+         *  @param[out] agindex     Glyph index of next character code.
+         *                          0 if charmap is empty.
+         *
+         *  @return The charmap's next character code.
+         *
+         *  You should use this function with FT_Get_First_Char to walk over
+         *  all character codes available in a given charmap. See the note for
+         *  this function for a simple code example.
+         *
+         *  Note that ‘*agindex’ is set to 0 when there are no more codes in
+         *  the charmap.
+         */
+        ULong_t get_next_char( ULong_t char_code, UInt_t& agindex );
+
+        /// Return the glyph index of a given glyph name. This function uses
+        /// driver specific objects to do the translation.
+        /**
+         *  @param[in]  glyph_name  The glyph name.
+         *
+         *  @return The glyph index. 0 means ‘undefined character code’.
+         */
+        UInt_t get_name_index( String_t* glyph_name );
+
+        /// Return the fsType flags for a font
+        /**
+         *  @return The fsType flags, FT_FSTYPE_XXX.
+         *
+         *  Use this function rather than directly reading the ‘fs_type’ field
+         *  in the PS_FontInfoRec structure which is only guaranteed to
+         *  return the correct results for Type 1 fonts.
+         */
+        UShort_t get_fstype_flags();
 
 };
 

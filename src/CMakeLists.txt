@@ -14,10 +14,12 @@ set(LIBS ${LIBS}
 
 add_library( ${CMAKE_PROJECT_NAME}
                 cppfreetype.cpp
+                Face.cpp
                 Library.cpp
                 Memory.cpp
                 Module.cpp
                 ModuleClass.cpp
                 OpenArgs.cpp
                 Parameter.cpp
+                Size.cpp
                 SizeRequest.cpp ) 

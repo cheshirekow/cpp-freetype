@@ -28,6 +28,20 @@
 
 namespace freetype
 {
+    Module::Module( void* ptr ):
+        m_ptr( ptr )
+    {
 
+    }
+
+    void* Module::get_ptr()
+    {
+        return m_ptr;
+    }
+
+    bool Module::is_valid()
+    {
+        return (m_ptr != 0 );
+    }
 
 } // namespace freetype 

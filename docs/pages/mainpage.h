@@ -13,6 +13,11 @@
  *
  *  cppfreetype mostly just provides objects which wrap freetype pointers
  *  with the methods of the underlying object
+ *
+ *  Note-to-self: You probably want to link against this library using
+ *  Link Time Optimization (LTO) (i.e. the -flto switch with gcc). It can
+ *  inline functions that are declared in this library in the code that
+ *  uses it.
  */
 
 

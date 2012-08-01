@@ -49,6 +49,14 @@ namespace freetype
      *
      * @note    For multi-threading applications each thread should have its
      *          own Library object.
+     *
+     * @note    when using this function, it is expected that the library is
+     *          destroyed with freetype::done. This is becasue freetype::init
+     *          creates a memory manager and gives it a reference count, and
+     *          when we call ~Library it only decrements the library count,
+     *          not the reference count. Therefore, make sure you call
+     *          freetype::done on the main library instance prior to it
+     *          going out of scope
      */
     Library init(Error_t& error);
 
@@ -58,8 +66,13 @@ namespace freetype
      *  @param[in]  library     handle to the library object to destroy,
      *                          must have been created with freetype::init
      *  @return FeeType error code. 0 means success
+     *
+     *  @note   Since this function decements the reference count of the
+     *          library, it will alter the library object changing it's
+     *          underlying pointer to null, so that the handle becomes
+     *          invalid
      */
-    Error_t done(Library library);
+    Error_t done(Library& library);
 
 
 }

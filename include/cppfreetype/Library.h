@@ -59,18 +59,6 @@ class Library
     private:
         void*   m_ptr;
 
-        /// Discard a given library object. This closes all drivers and
-        /// discards all resource objects.
-        /**
-         *  This function actually just decrements the reference count. As
-         *  such there's no need to use it in client code
-         *
-         *  @return FeeType error code. 0 means success
-         *  @note   See the discussion of reference counters in the
-         *          description of FT_Reference_Library.
-         */
-        Error_t done();
-
     public:
         /// wrap constructor, \p ptr must be a FT_Library
         /**
@@ -79,7 +67,7 @@ class Library
          *  @param[in]  reference   if true, reference count will be
          *                          incremented (default)
          */
-        Library( void* ptr, bool reference=true );
+        Library( void* ptr, bool reference=false );
 
         /// copy constructor, increments the reference count on the library
         /// object
@@ -92,6 +80,9 @@ class Library
 
         /// destructor will decrease reference count
         ~Library();
+
+        /// return underlying pointer
+        void* get_ptr();
 
         /// returns true if contained pointer is not null
         bool is_valid();
@@ -115,7 +106,7 @@ class Library
          *  @note       See the discussion of reference counters in the
          *              description of FT_Reference_Library.
          */
-        static Library create( Memory memory, Error_t& error );
+        //static Library create( Memory memory, Error_t& error );
 
         /// Add the set of default drivers to a given library object.
         /**
