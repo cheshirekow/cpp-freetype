@@ -88,9 +88,11 @@ EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO  
 EXCLUDE_PATTERNS       =  
 EXCLUDE_SYMBOLS        =  
-EXAMPLE_PATH           =   
-EXAMPLE_PATTERNS       =  
-EXAMPLE_RECURSIVE      = NO  
+EXAMPLE_PATH           = \
+        ${CMAKE_CURRENT_SOURCE_DIR}/test    \
+        ${CMAKE_CURRENT_BINARY_DIR}/test    
+EXAMPLE_PATTERNS       = *.cpp *.h *.hpp
+EXAMPLE_RECURSIVE      = YES
 IMAGE_PATH             =  
 INPUT_FILTER           =  
 FILTER_PATTERNS        =  

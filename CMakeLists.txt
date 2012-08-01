@@ -16,7 +16,8 @@ find_package(PkgConfig REQUIRED)
 # add the src/ subdirectory to the list of directories cmake processes
 include_directories(include)
 add_subdirectory(src)
-
+add_subdirectory(include)
+add_subdirectory(test)
 
 # configure the doxygen configuration
 configure_file( 

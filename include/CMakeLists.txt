@@ -1,0 +1,1 @@
+install( DIRECTORY cppfreetype DESTINATION include )

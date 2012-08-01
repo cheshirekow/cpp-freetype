@@ -18,6 +18,26 @@
  *  Link Time Optimization (LTO) (i.e. the -flto switch with gcc). It can
  *  inline functions that are declared in this library in the code that
  *  uses it.
+ *
+ *  As an example, here is a simple program which loads a font file and
+ *  displays some information from it:
+ *
+ *  \include test/tutorial/main.cpp
+ *
+ *  The output of this program looks like the following
+ *
+ *  \verbatim
+josh@Nadie:~/Codes/cpp/builds/cppfreetype/test$ ./test /usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-R.ttf
+Some info about the font:
+      filepath: /usr/share/fonts/truetype/ubuntu-font-family/Ubuntu-R.ttf
+        family: Ubuntu
+      n glyphs: 1264
+  units per EM: 1000
+
+josh@Nadie:~/Codes/cpp/builds/cppfreetype/test$
+
+\endverbatim
+ *
  */
 
 
