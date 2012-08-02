@@ -1,5 +1,7 @@
-find_package(Freetype2 REQUIRED)
-find_package(SigC++ REQUIRED)
+find_package(Freetype2 )
+find_package(SigC++ )
+
+if( (Freetype2_FOUND) AND (SigC++_FOUND) )
                                                                     
 include_directories( 
    ${Freetype2_INCLUDE_DIRS}
@@ -30,3 +32,10 @@ INSTALL( TARGETS ${CMAKE_PROJECT_NAME}
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib
 )
+
+
+else()
+    message( WARNING 
+        "freetype2 was not found, disabling build of cppfreetype library"
+        "you may still build the doc target"  )  
+endif()
