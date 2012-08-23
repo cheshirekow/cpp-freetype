@@ -36,39 +36,60 @@ namespace freetype
 ///                       Wrapper Overhead
 /// -------------------------------------------------------------------
 
+void Face::reference()
+{
+    if(m_ptr)
+        FT_Reference_Face((FT_Face)(m_ptr));
+}
+
+void Face::drop()
+{
+    if(m_ptr)
+        FT_Done_Face ((FT_Face)(m_ptr));
+    m_ptr = 0;
+}
+
 Face::Face(void* ptr, bool reference)
 {
     m_ptr = ptr;
     if (reference)
-        FT_Reference_Face((FT_Face)(ptr));
+        this->reference();
 }
+
 Face::Face(const Face& other)
 {
-    if (m_ptr)
-        FT_Done_Face ((FT_Face)(m_ptr));
-
     m_ptr  = other.m_ptr;
-    if (m_ptr)
-        FT_Reference_Face((FT_Face)(m_ptr));
+    reference();
 }
 
 Face& Face::operator =(const Face& other)
 {
-    if (m_ptr)
-        FT_Done_Face ((FT_Face)(m_ptr));
-
+    drop();
     m_ptr = other.m_ptr;
-
-    if (m_ptr)
-        FT_Reference_Face((FT_Face)(m_ptr));
+    reference();
 
     return *this;
 }
 
 Face::~Face()
 {
-    if (m_ptr)
-        FT_Done_Face ((FT_Face)(m_ptr));
+    drop();
+}
+
+void* Face::get_ptr()
+{
+    return m_ptr;
+}
+
+const void* Face::get_ptr() const
+{
+    return m_ptr;
+}
+
+void Face::invalidate()
+{
+    drop();
+    m_ptr = 0;
 }
 
 bool Face::is_valid()

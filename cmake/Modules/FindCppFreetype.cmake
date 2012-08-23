@@ -8,7 +8,7 @@
 include(LibFindMacros)
 
 # Include dir
-find_path(CppFreetype_FT2BUILD_INCLUDE_DIR
+find_path(CppFreetype_INCLUDE_DIR
   NAMES cppfreetype/cppfreetype.h
 )
 

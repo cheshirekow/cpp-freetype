@@ -58,6 +58,9 @@ class Face
     private:
         void* m_ptr;    ///< FT_FACE handle to underlying object
 
+        void reference();
+        void drop();
+
     public:
         /// -------------------------------------------------------------------
         ///                       Wrapper Overhead
@@ -68,7 +71,7 @@ class Face
          * @param[in]   ptr         underlying FT_FACE pointer
          * @param[in]   reference   if true, increments the reference count
          */
-        Face( void* ptr, bool reference=false );
+        Face( void* ptr=0, bool reference=false );
 
         /// copy constructor, increases reference count of underlying FT_FACE
         /// object
@@ -80,6 +83,11 @@ class Face
 
         /// desctructor decrements the reference count of the object
         ~Face();
+
+        void* get_ptr();
+        const void* get_ptr() const;
+
+        void invalidate();
 
         /// returns true if contained pointer is not null
         bool is_valid();

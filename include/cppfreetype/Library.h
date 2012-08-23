@@ -59,6 +59,9 @@ class Library
     private:
         void*   m_ptr;
 
+        void reference();
+        void drop();
+
     public:
         /// wrap constructor, \p ptr must be a FT_Library
         /**
@@ -67,7 +70,7 @@ class Library
          *  @param[in]  reference   if true, reference count will be
          *                          incremented (default)
          */
-        Library( void* ptr, bool reference=false );
+        Library( void* ptr=0, bool reference=false );
 
         /// copy constructor, increments the reference count on the library
         /// object
