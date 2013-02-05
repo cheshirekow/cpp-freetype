@@ -17,7 +17,7 @@
  *  along with cppfreetype.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *  @file   /home/josh/Codes/cpp/cppfreetype/include/cppfreetype/CPtr.h
+ *  @file   include/cppfreetype/CPtr.h
  *
  *  @date   Feb 5, 2013
  *  @author Josh Bialkowski (jbialk@mit.edu)

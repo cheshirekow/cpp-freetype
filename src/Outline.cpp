@@ -17,7 +17,7 @@
  *  along with gltk.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *  @file   /home/josh/Codes/cpp/cppfreetype/src/Outline.cpp
+ *  @file   src/Outline.cpp
  *
  *  @date   Feb 5, 2013
  *  @author Josh Bialkowski (jbialk@mit.edu)

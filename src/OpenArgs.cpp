@@ -17,7 +17,7 @@
  *  along with Fontconfigmm.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *  \file   OpenArgs.cpp
+ *  \file   src/OpenArgs.cpp
  *
  *  \date   Aug 1, 2012
  *  \author Josh Bialkowski (jbialk@mit.edu)

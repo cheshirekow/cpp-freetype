@@ -17,7 +17,7 @@
  *  along with gltk.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *  @file   /home/josh/Codes/cpp/cppfreetype/src/GlyphSlot.cpp
+ *  @file   src/GlyphSlot.cpp
  *
  *  @date   Feb 5, 2013
  *  @author Josh Bialkowski (jbialk@mit.edu)

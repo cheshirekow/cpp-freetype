@@ -17,7 +17,7 @@
  *  along with cppfreetype.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *  @file   /home/josh/Codes/cpp/cppfreetype/src/RefPtr.h
+ *  @file   cppfreetype/src/RefPtr.h
  *
  *  @date   Feb 3, 2013
  *  @author Josh Bialkowski (jbialk@mit.edu)

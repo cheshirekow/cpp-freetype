@@ -17,7 +17,7 @@
  *  along with cppfreetype.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *  \file   cppfreetype.h
+ *  \file   include/cppfreetype/cppfreetype.h
  *
  *  \date   Aug 1, 2012
  *  \author Josh Bialkowski (jbialk@mit.edu)

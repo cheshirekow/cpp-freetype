@@ -17,7 +17,7 @@
  *  along with cppfreetype.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *  \file   Face.h
+ *  \file   include/cppfreetype/Face.h
  *
  *  \date   Aug 1, 2012
  *  \author Josh Bialkowski (jbialk@mit.edu)

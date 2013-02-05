@@ -17,7 +17,7 @@
  *  along with gltk.  If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- *  @file   /home/josh/Codes/cpp/cppfreetype/src/Untag.cpp
+ *  @file   src/Untag.cpp
  *
  *  @date   Feb 5, 2013
  *  @author Josh Bialkowski (jbialk@mit.edu)
