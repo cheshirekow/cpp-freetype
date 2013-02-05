@@ -27,72 +27,41 @@
 #ifndef CPPFREETYPE_FACE_H_
 #define CPPFREETYPE_FACE_H_
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_MODULE_H
+
 #include <cppfreetype/types.h>
+#include <cppfreetype/RefPtr.h>
 
 namespace freetype
 {
 
 
+class Face;
 
-/// A handle to a given typographic face object. A face object models a given
-/// typeface, in a given style.
-/**
- *  Each face object also owns a single FT_GlyphSlot object, as well as one or
- *  more FT_Size objects.
- *
- *  Use FT_New_Face or FT_Open_Face to create a new face object from a given
- *  filepathname or a custom input stream.
- *
- *  Use FT_Done_Face to destroy it (along with its slot and sizes).
- *
- *  Faces are reference counted, as such there is an appropriate copy
- *  constructor, assignment operator, and destructor for managing the
- *  reference counts. Because of it's nature, you should probably not be
- *  passing around pointers to Face objects
- *
- *  @note   Fields may be changed after a call to FT_Attach_File or
- *          FT_Attach_Stream.
- */
-class Face
+/// c++ interface on top of c-object pointer
+class FaceDelegate
 {
     private:
-        void* m_ptr;    ///< FT_FACE handle to underlying object
+        FT_Face m_ptr;
 
-        void reference();
-        void drop();
+        /// constructable only by RefPtr<Face>
+        FaceDelegate( FT_Face ptr=0 ):
+            m_ptr(ptr)
+        {}
+
+        /// not copy-constructable
+        FaceDelegate( const FaceDelegate& );
+
+        /// not copy-assignable
+        FaceDelegate& operator=( const FaceDelegate& );
 
     public:
-        /// -------------------------------------------------------------------
-        ///                       Wrapper Overhead
-        /// -------------------------------------------------------------------
+        friend class RefPtr<Face>;
 
-        /// wrap constructor, wraps the underlying FT_FACE pointer
-        /**
-         * @param[in]   ptr         underlying FT_FACE pointer
-         * @param[in]   reference   if true, increments the reference count
-         */
-        Face( void* ptr=0, bool reference=false );
-
-        /// copy constructor, increases reference count of underlying FT_FACE
-        /// object
-        Face( const Face& other );
-
-        /// assignment operator, decremetns reference count of currently
-        /// contained pointer and increments reference count of the other
-        Face& operator=(const Face& other);
-
-        /// desctructor decrements the reference count of the object
-        ~Face();
-
-        void* get_ptr();
-        const void* get_ptr() const;
-
-        void invalidate();
-
-        /// returns true if contained pointer is not null
-        bool is_valid();
-
-
+        FaceDelegate* operator->(){ return this; }
+        const FaceDelegate* operator->() const{ return this; }
 
         /// -------------------------------------------------------------------
         ///                    Structure Accessors
@@ -133,7 +102,7 @@ class Face
         const Int_t&      num_fixed_sizes() const;
 
         /// An array of FT_Bitmap_Size for all bitmap strikes in the face. It is set to NULL if there is no bitmap strike.
-        //FT_Bitmap_Size*   available_sizes;
+//        FT_Bitmap_Size*   available_sizes;
 
         /// The number of charmaps in the face.
         Int_t&            num_charmaps();
@@ -220,7 +189,7 @@ class Face
          *                              underlying struct
          *  @return FreeType error code. 0 means success.
          */
-        Error_t select_size( Int_t strike_index );
+//        Error_t select_size( Int_t strike_index );
 
         /// Calls FT_Request_Size to request the nominal size (in points)
         /**
@@ -244,11 +213,11 @@ class Face
          *
          *  Don't use this function if you are using the FreeType cache API.
          */
-        Error_t set_char_size(
-                        F26Dot6_t   char_width,
-                        F26Dot6_t   char_height,
-                        UInt_t      horz_resolution,
-                        UInt_t      vert_resolution );
+//        Error_t set_char_size(
+//                        F26Dot6_t   char_width,
+//                        F26Dot6_t   char_height,
+//                        UInt_t      horz_resolution,
+//                        UInt_t      vert_resolution );
 
         /// This function calls FT_Request_Size to request the nominal size
         /// (in pixels).
@@ -258,9 +227,9 @@ class Face
          *
          *  @return FreeType error code. 0 means success.
          */
-        Error_t set_pixel_sizes(
-                        UInt_t  pixel_width,
-                        UInt_t  pixel_height    );
+//        Error_t set_pixel_sizes(
+//                        UInt_t  pixel_width,
+//                        UInt_t  pixel_height    );
 
         /// A function used to load a single glyph into the glyph slot of a
         /// face object.
@@ -287,9 +256,9 @@ class Face
          *  don't have a corresponding glyph in the font). See the discussion
          *  of the FT_FACE_FLAG_CID_KEYED flag for more details.
          */
-        Error_t load_glyph(
-                        UInt_t  glyph_index,
-                        Int32_t load_flags );
+//        Error_t load_glyph(
+//                        UInt_t  glyph_index,
+//                        Int32_t load_flags );
 
         /// A function used to load a single glyph into the glyph slot of a
         /// face object, according to its character code.
@@ -306,9 +275,9 @@ class Face
          *
          *  This function simply calls FT_Get_Char_Index and FT_Load_Glyph.
          */
-        Error_t load_char(
-                        ULong_t char_code,
-                        Int32_t load_flags );
+//        Error_t load_char(
+//                        ULong_t char_code,
+//                        Int32_t load_flags );
 
         /// Retrieve the ASCII name of a given glyph in a face. This only
         /// works for those faces where FT_HAS_GLYPH_NAMES(face) returns 1.
@@ -336,10 +305,10 @@ class Face
          *  macro ‘FT_CONFIG_OPTION_NO_GLYPH_NAMES’ is defined in
          *  ‘include/freetype/config/ftoptions.h’.
          */
-        Error_t get_glyph_name(
-                        UInt_t      glyph_index,
-                        Pointer_t   buffer,
-                        UInt_t      buffer_max );
+//        Error_t get_glyph_name(
+//                        UInt_t      glyph_index,
+//                        Pointer_t   buffer,
+//                        UInt_t      buffer_max );
 
         /// Retrieve the ASCII PostScript name of a given face, if available.
         /// This only works with PostScript and TrueType fonts.
@@ -349,7 +318,7 @@ class Face
          *  @note   The returned pointer is owned by the face and is destroyed
          *          with it.
          */
-        const char* get_postscript_name();
+//        const char* get_postscript_name();
 
         /// Select a given charmap by its encoding tag (as listed in
         /// ‘freetype.h’).
@@ -367,7 +336,7 @@ class Face
          *  is preferred to a UCS-2 cmap). It is thus preferable to
          *  FT_Set_Charmap in this case.
          */
-        Error_t select_charmap( Encoding encoding );
+//        Error_t select_charmap( Encoding encoding );
 
         /// Return the glyph index of a given character code. This function
         /// uses a charmap object to do the mapping.
@@ -388,7 +357,7 @@ class Face
          *  whatever was there will be moved to the last index -- Type 42
          *  fonts are considered invalid under this condition.
          */
-        UInt_t get_char_index( ULong_t charcode );
+//        UInt_t get_char_index( ULong_t charcode );
 
         /// This function is used to return the first character code in the
         /// current charmap of a given face. It also returns the corresponding
@@ -421,7 +390,7 @@ while ( gindex != 0 )
          *  result itself can be 0 in two cases: if the charmap is empty or if
          *  the value 0 is the first valid character code.
          */
-        ULong_t get_first_char( UInt_t& agindex );
+//        ULong_t get_first_char( UInt_t& agindex );
 
         /// This function is used to return the next character code in the
         /// current charmap of a given face following the value ‘char_code’,
@@ -440,7 +409,7 @@ while ( gindex != 0 )
          *  Note that ‘*agindex’ is set to 0 when there are no more codes in
          *  the charmap.
          */
-        ULong_t get_next_char( ULong_t char_code, UInt_t& agindex );
+//        ULong_t get_next_char( ULong_t char_code, UInt_t& agindex );
 
         /// Return the glyph index of a given glyph name. This function uses
         /// driver specific objects to do the translation.
@@ -449,7 +418,7 @@ while ( gindex != 0 )
          *
          *  @return The glyph index. 0 means ‘undefined character code’.
          */
-        UInt_t get_name_index( String_t* glyph_name );
+//        UInt_t get_name_index( String_t* glyph_name );
 
         /// Return the fsType flags for a font
         /**
@@ -459,9 +428,36 @@ while ( gindex != 0 )
          *  in the PS_FontInfoRec structure which is only guaranteed to
          *  return the correct results for Type 1 fonts.
          */
-        UShort_t get_fstype_flags();
-
+//        UShort_t get_fstype_flags();
 };
+
+/// traits class for a Face, a Freetype face instance. A face object models a
+/// given typeface, in a given style.
+/**
+ *  Each face object also owns a single FT_GlyphSlot object, as well as one or
+ *  more FT_Size objects.
+ *
+ *  Use FT_New_Face or FT_Open_Face to create a new face object from a given
+ *  filepathname or a custom input stream.
+ *
+ *  Use FT_Done_Face to destroy it (along with its slot and sizes).
+ *
+ *  Faces are reference counted, as such there is an appropriate copy
+ *  constructor, assignment operator, and destructor for managing the
+ *  reference counts. Because of it's nature, you should probably not be
+ *  passing around pointers to Face objects
+ *
+ *  @note   Fields may be changed after a call to FT_Attach_File or
+ *          FT_Attach_Stream.
+ */
+struct Face
+{
+    typedef FaceDelegate    Delegate;
+    typedef FT_Face         cobjptr;
+};
+
+
+
 
 } // namespace freetype 
 

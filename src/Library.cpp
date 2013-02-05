@@ -58,12 +58,12 @@ void RefPtr<Library>::dereference()
 //    error = FT_New_Library( (FT_Memory) memory.get_ptr(), &ptr );
 //    return Library( (void*) ptr );
 //}
-//
-//void Library::add_default_modules()
-//{
-//    FT_Add_Default_Modules( (FT_Library) m_ptr );
-//}
-//
+
+void LibraryDelegate::add_default_modules()
+{
+    FT_Add_Default_Modules( m_ptr );
+}
+
 //Module Library::get_module( const char* module_name )
 //{
 //    return Module( (void*)
@@ -77,15 +77,25 @@ void RefPtr<Library>::dereference()
 //            (FT_Library)m_ptr,
 //            (FT_Module) module.get_ptr() );
 //}
-//
-//Face Library::new_face( const char* filepath,
-//                        Long_t      face_index,
-//                        Error_t&    error )
-//{
-//    FT_Face ptr;
-//    error = FT_New_Face( (FT_Library)m_ptr, filepath, face_index, &ptr );
-//    return Face(ptr);
-//}
+
+RefPtr<Face> LibraryDelegate::new_face(
+    const char* filepath,
+    Long        face_index )
+{
+    FT_Face ptr;
+    FT_New_Face( m_ptr, filepath, face_index, &ptr );
+    return RefPtr<Face>(ptr);
+}
+
+RValuePair< RefPtr<Face>, Error> LibraryDelegate::new_face_e(
+    const char* filepath,
+    Long        face_index )
+{
+    FT_Face ptr;
+    Error   err;
+    err = FT_New_Face( m_ptr, filepath, face_index, &ptr );
+    return RValuePair< RefPtr<Face>, Error>( RefPtr<Face>(ptr), err );
+}
 
 
 

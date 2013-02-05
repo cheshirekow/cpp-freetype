@@ -64,12 +64,15 @@ class LibraryDelegate
     public:
         friend class RefPtr<Library>;
 
+        LibraryDelegate* operator->(){ return this; }
+        const LibraryDelegate* operator->() const{ return this; }
+
         /// Add the set of default drivers to a given library object.
         /**
          *  This is only useful when you create a library object with
          *  Library::create (usually to plug a custom memory manager).
          */
-//        void add_default_modules();
+        void add_default_modules();
 
         /// Add a new module to a given library instance.
         /**
@@ -112,9 +115,12 @@ class LibraryDelegate
          *          than or equal to zro, it must be non-NULL. See
          *          Library::open_face for more details
          */
-//        Face new_face( const char*  filepath,
-//                        Long_t      face_index,
-//                        Error_t&    error );
+        RefPtr<Face> new_face(  const char* filepath,
+                                Long        face_index );
+
+        RValuePair< RefPtr<Face>, Error> new_face_e(
+                                const char* filepath,
+                                Long        face_index );
 
         /// Create a face object from a given resource described by
         /// FT_Open_Args.

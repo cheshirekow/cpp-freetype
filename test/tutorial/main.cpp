@@ -53,7 +53,8 @@ int main( int argc, char** argv )
     // artificial scope... we dont want a dangling Face pointer hanging
     // around trying to free itself after we call ft::done
     {
-//        ft::Face face     = freetype.new_face( argv[1], 0, result );
+        RefPtr<Face> face;
+        (face,result) = freetype->new_face_e( argv[1], 0 );
 
         if(result)
         {
@@ -64,9 +65,9 @@ int main( int argc, char** argv )
 
         std::cout << "Some info about the font: "
           << "\n      filepath: " << argv[1]
-//          << "\n        family: " << face.family_name()
-//          << "\n      n glyphs: " << face.num_glyphs()
-//          << "\n  units per EM: " << face.units_per_EM()
+          << "\n        family: " << face->family_name()
+          << "\n      n glyphs: " << face->num_glyphs()
+          << "\n  units per EM: " << face->units_per_EM()
           << "\n"
           << std::endl;
     }
