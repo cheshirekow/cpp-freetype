@@ -24,7 +24,8 @@ add_library( ${CMAKE_PROJECT_NAME}
                 ModuleClass.cpp
                 OpenArgs.cpp
                 Outline.cpp
-                SizeRequest.cpp ) 
+                SizeRequest.cpp
+                Untag.cpp ) 
                 
                 
 INSTALL( TARGETS ${CMAKE_PROJECT_NAME}

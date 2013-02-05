@@ -78,13 +78,9 @@ int main( int argc, char** argv )
 
         for(int i=0; i < face->num_charmaps(); i++)
         {
-            UInt map = (*face)->charmaps[i]->encoding;
+            Untag untag = (*face)->charmaps[i]->encoding;
             std::cout
-          << "\n                "
-          << (char)( (map >> 24 ) & 0xff )
-          << (char)( (map >> 16 ) & 0xff )
-          << (char)( (map >> 8  ) & 0xff )
-          << (char)( (map >> 0  ) & 0xff );
+          << "\n                " << untag;
         }
 
         std::cout
@@ -93,39 +89,20 @@ int main( int argc, char** argv )
 
 
         result = face->select_charmap( encoding::UNICODE );
-        if( result )
-        {
-            std::cerr << "Failed to select unicode charmap: "
-                      << result << std::endl;
-        }
-        else
-        {
-            std::cout << "Set charmap to index: "
-                      << FT_Get_Charmap_Index( (*face)->charmap )
-                      << std::endl;
-        }
+        std::cout << "Set charmap to index: "
+                  << FT_Get_Charmap_Index( (*face)->charmap )
+                  << std::endl;
 
         result = face->set_char_size(
                     0,      // char_width in 1/64th of points
                     16*64,  // char height in 1/64th of points
                     300,    // horizontal device resolution
                     300 );  // vertical device resolution
-        if( result )
-        {
-            std::cerr << "Failed to set the font size: "
-                      << result << std::endl;
-        }
 
         char theChar   = 'A';
         UInt charIndex = face->get_char_index(theChar);
         result = face->load_char(theChar, load::NO_BITMAP | load::NO_SCALE);
-        if( result )
-        {
-            std::cerr << "Failed to select character '" << theChar << "': "
-                      << result << std::endl;
-        }
-
-        ULong glyphFormat = (*face)->glyph->format;
+        ULong glyphFormat = face->glyph()->format();
 
         std::cout << "for char " << theChar << " :"
             << "\n    ascii: " << (int)theChar

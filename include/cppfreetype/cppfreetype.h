@@ -30,11 +30,14 @@
 #include <cppfreetype/AssignmentPair.h>
 #include <cppfreetype/RefPtr.h>
 #include <cppfreetype/CPtr.h>
+
 #include <cppfreetype/types.h>
 #include <cppfreetype/Face.h>
-#include <cppfreetype/Memory.h>
-#include <cppfreetype/ModuleClass.h>
+#include <cppfreetype/GlyphSlot.h>
 #include <cppfreetype/Library.h>
+#include <cppfreetype/Outline.h>
+#include <cppfreetype/Untag.h>
+
 
 /// root namespace for freetype
 namespace freetype
