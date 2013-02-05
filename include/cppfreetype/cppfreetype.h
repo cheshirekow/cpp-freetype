@@ -45,7 +45,6 @@ namespace freetype
     /// Initialize a new FreeType library object. The set of modules that are
     /// registered by this function is determined at build time.
     /**
-     * @param[out]  error FreeType error code. 0 means success.
      * @return      A handle to a new library object
      *
      * @note    In case you want to provide your own memory allocating
@@ -72,8 +71,8 @@ namespace freetype
     /// Initialize a new FreeType library object. The set of modules that are
     /// registered by this function is determined at build time.
     /**
-     * @param[out]  error FreeType error code. 0 means success.
-     * @return      A handle to a new library object
+     * @return  A handle to a new library object, and the result of the
+     *          underlyinig call
      *
      * @note    In case you want to provide your own memory allocating
      *          routines, use Library::new instead, followed by a call to

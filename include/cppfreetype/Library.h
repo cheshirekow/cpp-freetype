@@ -110,7 +110,6 @@ class LibraryDelegate
         /**
          * @param[in]   filepath    path of the font file
          * @param[in]   face_index  index of the face within the font, 0 indexed
-         * @param[out]  error       FreeType error code. 0 means success
          * @return  A handle to a new face object. If `face_index` is greater
          *          than or equal to zro, it must be non-NULL. See
          *          Library::open_face for more details
@@ -118,6 +117,14 @@ class LibraryDelegate
         RefPtr<Face> new_face(  const char* filepath,
                                 Long        face_index );
 
+        /// calls Library::open_face to open a font by it's pathname
+        /**
+         * @param[in]   filepath    path of the font file
+         * @param[in]   face_index  index of the face within the font, 0 indexed
+         * @return  A handle to a new face object. If `face_index` is greater
+         *          than or equal to zro, it must be non-NULL. See
+         *          Library::open_face for more details
+         */
         RValuePair< RefPtr<Face>, Error> new_face_e(
                                 const char* filepath,
                                 Long        face_index );
