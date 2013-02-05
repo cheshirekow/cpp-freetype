@@ -35,12 +35,12 @@ namespace freetype {
 template <typename T1, typename T2 >
 struct RValuePair
 {
-    const T1&  p1;
-    const T2&  p2;
+    T1  p1;
+    T2  p2;
 
-    RValuePair( const T1& p1_ref, const T2& p2_ref):
-        p1(p1_ref),
-        p2(p2_ref)
+    RValuePair( T1 p1_in, const T2 p2_in):
+        p1(p1_in),
+        p2(p2_in)
     {}
 };
 

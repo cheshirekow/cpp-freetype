@@ -28,6 +28,7 @@
 #include FT_FREETYPE_H
 
 #include <cppfreetype/cppfreetype.h>
+#include <iostream>
 
 namespace freetype
 {
@@ -50,13 +51,14 @@ namespace freetype
     RValuePair< RefPtr<Library>, Error > init_e()
     {
         FT_Library ptr;
-        Error      error;
-        error = FT_Init_FreeType(&ptr);
+        Error      err = FT_Init_FreeType(&ptr);
+
+        RValuePair< RefPtr<Library>, Error > pair
+            ( RefPtr<Library>(ptr), err );
 
         // give an extra reference count which we'llt ake away in the
         // done functoin
-        return RValuePair< RefPtr<Library>, Error >(
-                RefPtr<Library>(ptr,true), error);
+        return pair;
     }
 
     Error done(RefPtr<Library>& library)

@@ -40,13 +40,15 @@ int main( int argc, char** argv )
         return 1;
     }
 
-    Error_t result;
+    Error result=1;
     RefPtr<Library> freetype;
     (freetype,result) = init_e();
 
     if(result)
     {
-        std::cerr << "Failed to initialize freetype" << std::endl;
+        std::cerr << "Failed to initialize freetype: "
+                  << result
+                  << std::endl;
         return 1;
     }
 
