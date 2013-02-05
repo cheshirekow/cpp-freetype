@@ -69,47 +69,47 @@ class FaceDelegate
 
         /// The number of faces in the font file. Some font formats can have
         /// multiple faces in a font file.
-        Long_t&           num_faces();
-        const Long_t&     num_faces() const;
+        Long&           num_faces();
+        const Long&     num_faces() const;
 
         /// The index of the face in the font file. It is set to 0 if there is only one face in the font file.
-        Long_t&           face_index();
-        const Long_t&     face_index() const;
+        Long&           face_index();
+        const Long&     face_index() const;
 
         /// A set of bit flags that give important information about the face; see FT_FACE_FLAG_XXX for the details.
-        Long_t&           face_flags();
-        const Long_t&     face_flags() const;
+        Long&           face_flags();
+        const Long&     face_flags() const;
 
         /// A set of bit flags indicating the style of the face; see FT_STYLE_FLAG_XXX for the details.
-        Long_t&           style_flags();
-        const Long_t&     style_flags() const;
+        Long&           style_flags();
+        const Long&     style_flags() const;
 
         /// The number of glyphs in the face. If the face is scalable and has sbits (see ‘num_fixed_sizes’), it is set to the number of outline glyphs.
         /// For CID-keyed fonts, this value gives the highest CID used in the font.
-        Long_t&           num_glyphs();
-        const Long_t&     num_glyphs() const;
+        Long&           num_glyphs();
+        const Long&     num_glyphs() const;
 
         /// The face's family name. This is an ASCII string, usually in English, which describes the typeface's family (like ‘Times New Roman’, ‘Bodoni’, ‘Garamond’, etc). This is a least common denominator used to list fonts. Some formats (TrueType & OpenType) provide localized and Unicode versions of this string. Applications should use the format specific interface to access them. Can be NULL (e.g., in fonts embedded in a PDF file).
-        String_t*         family_name();
-        const String_t*   family_name() const;
+        String*         family_name();
+        const String*   family_name() const;
 
         /// The face's style name. This is an ASCII string, usually in English, which describes the typeface's style (like ‘Italic’, ‘Bold’, ‘Condensed’, etc). Not all font formats provide a style name, so this field is optional, and can be set to NULL. As for ‘family_name’, some formats provide localized and Unicode versions of this string. Applications should use the format specific interface to access them.
-        String_t*         style_name();
-        const String_t*   style_name() const;
+        String*         style_name();
+        const String*   style_name() const;
 
         /// The number of bitmap strikes in the face. Even if the face is scalable, there might still be bitmap strikes, which are called ‘sbits’ in that case.
-        Int_t&            num_fixed_sizes();
-        const Int_t&      num_fixed_sizes() const;
+        Int&            num_fixed_sizes();
+        const Int&      num_fixed_sizes() const;
 
         /// An array of FT_Bitmap_Size for all bitmap strikes in the face. It is set to NULL if there is no bitmap strike.
 //        FT_Bitmap_Size*   available_sizes;
 
         /// The number of charmaps in the face.
-        Int_t&            num_charmaps();
-        const Int_t&      num_charmaps() const;
+        Int&            num_charmaps();
+        const Int&      num_charmaps() const;
 
         /// An array of the charmaps of the face.
-        //CharMap_t*        charmaps;
+        //CharMap*        charmaps;
 
         /// A field reserved for client uses. See the FT_Generic type description.
         //FT_Generic        generic;
@@ -123,36 +123,36 @@ class FaceDelegate
         //FT_BBox           bbox;
 
         /// The number of font units per EM square for this face. This is typically 2048 for TrueType fonts, and 1000 for Type 1 fonts. Only relevant for scalable formats.
-        UShort_t&         units_per_EM();
-        const UShort_t&   units_per_EM() const;
+        UShort&         units_per_EM();
+        const UShort&   units_per_EM() const;
 
         /// The typographic ascender of the face, expressed in font units. For font formats not having this information, it is set to ‘bbox.yMax’. Only relevant for scalable formats.
-        Short_t&          ascender();
-        const Short_t&    ascender() const;
+        Short&          ascender();
+        const Short&    ascender() const;
 
         /// The typographic descender of the face, expressed in font units. For font formats not having this information, it is set to ‘bbox.yMin’. Note that this field is usually negative. Only relevant for scalable formats.
-        Short_t&          descender();
-        const Short_t&    descender() const;
+        Short&          descender();
+        const Short&    descender() const;
 
         /// The height is the vertical distance between two consecutive baselines, expressed in font units. It is always positive. Only relevant for scalable formats.
-        Short_t&          height();
-        const Short_t&    height() const;
+        Short&          height();
+        const Short&    height() const;
 
         /// The maximum advance width, in font units, for all glyphs in this face. This can be used to make word wrapping computations faster. Only relevant for scalable formats.
-        Short_t&          max_advance_width();
-        const Short_t&    max_advance_width() const;
+        Short&          max_advance_width();
+        const Short&    max_advance_width() const;
 
         /// The maximum advance height, in font units, for all glyphs in this face. This is only relevant for vertical layouts, and is set to ‘height’ for fonts that do not provide vertical metrics. Only relevant for scalable formats.
-        Short_t&          max_advance_height();
-        const Short_t&    max_advance_height() const;
+        Short&          max_advance_height();
+        const Short&    max_advance_height() const;
 
         /// The position, in font units, of the underline line for this face. It is the center of the underlining stem. Only relevant for scalable formats.
-        Short_t&          underline_position();
-        const Short_t&    underline_position() const;
+        Short&          underline_position();
+        const Short&    underline_position() const;
 
         /// The thickness, in font units, of the underline for this face. Only relevant for scalable formats.
-        Short_t&          underline_thickness();
-        const Short_t&    underline_thickness() const;
+        Short&          underline_thickness();
+        const Short&    underline_thickness() const;
 
         /// The face's associated glyph slot(s).
         //FT_GlyphSlot      glyph;
@@ -189,7 +189,7 @@ class FaceDelegate
          *                              underlying struct
          *  @return FreeType error code. 0 means success.
          */
-//        Error_t select_size( Int_t strike_index );
+        Error select_size( Int strike_index );
 
         /// Calls FT_Request_Size to request the nominal size (in points)
         /**
@@ -213,11 +213,11 @@ class FaceDelegate
          *
          *  Don't use this function if you are using the FreeType cache API.
          */
-//        Error_t set_char_size(
-//                        F26Dot6_t   char_width,
-//                        F26Dot6_t   char_height,
-//                        UInt_t      horz_resolution,
-//                        UInt_t      vert_resolution );
+        Error set_char_size(
+                        F26Dot6   char_width,
+                        F26Dot6   char_height,
+                        UInt      horz_resolution,
+                        UInt      vert_resolution );
 
         /// This function calls FT_Request_Size to request the nominal size
         /// (in pixels).
@@ -227,9 +227,9 @@ class FaceDelegate
          *
          *  @return FreeType error code. 0 means success.
          */
-//        Error_t set_pixel_sizes(
-//                        UInt_t  pixel_width,
-//                        UInt_t  pixel_height    );
+        Error set_pixel_sizes(
+                        UInt  pixel_width,
+                        UInt  pixel_height    );
 
         /// A function used to load a single glyph into the glyph slot of a
         /// face object.
@@ -256,9 +256,9 @@ class FaceDelegate
          *  don't have a corresponding glyph in the font). See the discussion
          *  of the FT_FACE_FLAG_CID_KEYED flag for more details.
          */
-//        Error_t load_glyph(
-//                        UInt_t  glyph_index,
-//                        Int32_t load_flags );
+        Error load_glyph(
+                        UInt  glyph_index,
+                        Int32 load_flags );
 
         /// A function used to load a single glyph into the glyph slot of a
         /// face object, according to its character code.
@@ -275,9 +275,9 @@ class FaceDelegate
          *
          *  This function simply calls FT_Get_Char_Index and FT_Load_Glyph.
          */
-//        Error_t load_char(
-//                        ULong_t char_code,
-//                        Int32_t load_flags );
+        Error load_char(
+                        ULong char_code,
+                        Int32 load_flags );
 
         /// Retrieve the ASCII name of a given glyph in a face. This only
         /// works for those faces where FT_HAS_GLYPH_NAMES(face) returns 1.
@@ -305,10 +305,10 @@ class FaceDelegate
          *  macro ‘FT_CONFIG_OPTION_NO_GLYPH_NAMES’ is defined in
          *  ‘include/freetype/config/ftoptions.h’.
          */
-//        Error_t get_glyph_name(
-//                        UInt_t      glyph_index,
-//                        Pointer_t   buffer,
-//                        UInt_t      buffer_max );
+        Error get_glyph_name(
+                        UInt      glyph_index,
+                        Pointer   buffer,
+                        UInt      buffer_max );
 
         /// Retrieve the ASCII PostScript name of a given face, if available.
         /// This only works with PostScript and TrueType fonts.
@@ -318,7 +318,7 @@ class FaceDelegate
          *  @note   The returned pointer is owned by the face and is destroyed
          *          with it.
          */
-//        const char* get_postscript_name();
+        const char* get_postscript_name();
 
         /// Select a given charmap by its encoding tag (as listed in
         /// ‘freetype.h’).
@@ -336,7 +336,17 @@ class FaceDelegate
          *  is preferred to a UCS-2 cmap). It is thus preferable to
          *  FT_Set_Charmap in this case.
          */
-//        Error_t select_charmap( Encoding encoding );
+        Error select_charmap( Encoding encoding );
+
+        /// Select a given charmap for character code to glyph index mapping
+        /**
+         *  @param[in]  id  index in charmaps, must be less than num_charmaps
+         *
+         *  @return FreeType error code. 0 means success.
+         *
+         *  This function returns an error if id is not a valid charmap.
+         */
+        Error set_charmap( UInt id );
 
         /// Return the glyph index of a given character code. This function
         /// uses a charmap object to do the mapping.
@@ -357,7 +367,7 @@ class FaceDelegate
          *  whatever was there will be moved to the last index -- Type 42
          *  fonts are considered invalid under this condition.
          */
-//        UInt_t get_char_index( ULong_t charcode );
+        UInt get_char_index( ULong charcode );
 
         /// This function is used to return the first character code in the
         /// current charmap of a given face. It also returns the corresponding
@@ -390,7 +400,7 @@ while ( gindex != 0 )
          *  result itself can be 0 in two cases: if the charmap is empty or if
          *  the value 0 is the first valid character code.
          */
-//        ULong_t get_first_char( UInt_t& agindex );
+        ULong get_first_char( UInt& agindex );
 
         /// This function is used to return the next character code in the
         /// current charmap of a given face following the value ‘char_code’,
@@ -409,7 +419,7 @@ while ( gindex != 0 )
          *  Note that ‘*agindex’ is set to 0 when there are no more codes in
          *  the charmap.
          */
-//        ULong_t get_next_char( ULong_t char_code, UInt_t& agindex );
+        ULong get_next_char( ULong char_code, UInt& agindex );
 
         /// Return the glyph index of a given glyph name. This function uses
         /// driver specific objects to do the translation.
@@ -418,7 +428,7 @@ while ( gindex != 0 )
          *
          *  @return The glyph index. 0 means ‘undefined character code’.
          */
-//        UInt_t get_name_index( String_t* glyph_name );
+        UInt get_name_index( String* glyph_name );
 
         /// Return the fsType flags for a font
         /**
@@ -428,7 +438,7 @@ while ( gindex != 0 )
          *  in the PS_FontInfoRec structure which is only guaranteed to
          *  return the correct results for Type 1 fonts.
          */
-//        UShort_t get_fstype_flags();
+        UShort get_fstype_flags();
 };
 
 /// traits class for a Face, a Freetype face instance. A face object models a

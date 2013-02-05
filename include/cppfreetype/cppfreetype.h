@@ -29,6 +29,7 @@
 
 #include <cppfreetype/AssignmentPair.h>
 #include <cppfreetype/RefPtr.h>
+#include <cppfreetype/CPtr.h>
 #include <cppfreetype/types.h>
 #include <cppfreetype/Face.h>
 #include <cppfreetype/Memory.h>

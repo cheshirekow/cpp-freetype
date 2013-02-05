@@ -68,10 +68,94 @@ int main( int argc, char** argv )
         std::cout << "Some info about the font: "
           << "\n      filepath: " << argv[1]
           << "\n        family: " << face->family_name()
+          << "\n         style: " << face->style_name()
+          << "\n  n fixed size: " << face->num_fixed_sizes()
+          << "\n    n charmaps: " << face->num_charmaps()
+          << "\n      scalable: " << (face->is_scalable() ? "yes" : "no")
           << "\n      n glyphs: " << face->num_glyphs()
           << "\n  units per EM: " << face->units_per_EM()
+          << "\n      charmaps: ";
+
+        for(int i=0; i < face->num_charmaps(); i++)
+        {
+            UInt map = (*face)->charmaps[i]->encoding;
+            std::cout
+          << "\n                "
+          << (char)( (map >> 24 ) & 0xff )
+          << (char)( (map >> 16 ) & 0xff )
+          << (char)( (map >> 8  ) & 0xff )
+          << (char)( (map >> 0  ) & 0xff );
+        }
+
+        std::cout
           << "\n"
           << std::endl;
+
+
+        result = face->select_charmap( encoding::UNICODE );
+        if( result )
+        {
+            std::cerr << "Failed to select unicode charmap: "
+                      << result << std::endl;
+        }
+        else
+        {
+            std::cout << "Set charmap to index: "
+                      << FT_Get_Charmap_Index( (*face)->charmap )
+                      << std::endl;
+        }
+
+        result = face->set_char_size(
+                    0,      // char_width in 1/64th of points
+                    16*64,  // char height in 1/64th of points
+                    300,    // horizontal device resolution
+                    300 );  // vertical device resolution
+        if( result )
+        {
+            std::cerr << "Failed to set the font size: "
+                      << result << std::endl;
+        }
+
+        char theChar   = 'A';
+        UInt charIndex = face->get_char_index(theChar);
+        result = face->load_char(theChar, load::NO_BITMAP | load::NO_SCALE);
+        if( result )
+        {
+            std::cerr << "Failed to select character '" << theChar << "': "
+                      << result << std::endl;
+        }
+
+        ULong glyphFormat = (*face)->glyph->format;
+
+        std::cout << "for char " << theChar << " :"
+            << "\n    ascii: " << (int)theChar
+            << "\n    index: " << charIndex
+            << "\n   format: " << (char)( (glyphFormat >> 24 ) & 0xff )
+                               << (char)( (glyphFormat >> 16 ) & 0xff )
+                               << (char)( (glyphFormat >> 8  ) & 0xff )
+                               << (char)( (glyphFormat >> 0  ) & 0xff )
+            << "\n contours: " << (*face)->glyph->outline.n_contours
+            << "\n   points: " << (*face)->glyph->outline.n_points
+            << std::endl;
+
+        int j = 0;
+        for(int i=0; i < (*face)->glyph->outline.n_contours; i++)
+        {
+            std::cout << "\n\nContour: " << i << "\n";
+            for( ;j < (*face)->glyph->outline.contours[i]; j++)
+            {
+                FT_Vector pt = (*face)->glyph->outline.points[j];
+                char      tag= (*face)->glyph->outline.tags[j];
+                bool      on = (tag & curve_tag::ON);
+                bool      cub= (tag & curve_tag::CUBIC);
+                std::cout << "\n   ("
+                          << pt.x << ","
+                          << pt.y << ")  "
+                          << ( on ? "on" : "off") << "  "
+                          << ( on && cub ? "cubic" : "quadradic");
+
+            }
+        }
     }
 
     result = done(freetype);

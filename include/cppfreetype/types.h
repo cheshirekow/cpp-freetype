@@ -439,14 +439,14 @@ namespace load
      *  mathematical integral sign), the auto-hinter might produce useless
      *  results.
      */
-    const UInt_t DEFAULT                      = 0x0;
+    const UInt_t DEFAULT                      = FT_LOAD_DEFAULT;
 
     /// Don't scale the outline glyph loaded, but keep it in font units.
     /**
      *  This flag implies FT_LOAD_NO_HINTING and FT_LOAD_NO_BITMAP, and unsets
      *  FT_LOAD_RENDER.
      */
-    const UInt_t NO_SCALE                     = ( 1L << 0 );
+    const UInt_t NO_SCALE                     = FT_LOAD_NO_SCALE;
 
     /// Disable hinting.
     /**
@@ -456,7 +456,7 @@ namespace load
      *
      *  This flag is implied by FT_LOAD_NO_SCALE.
      */
-    const UInt_t NO_HINTING                   = ( 1L << 1 );
+    const UInt_t NO_HINTING                   = FT_LOAD_NO_HINTING;
 
     /// Call FT_Render_Glyph after the glyph is loaded
     /*
@@ -465,33 +465,33 @@ namespace load
      *
      *  This flag is unset by FT_LOAD_NO_SCALE.
      */
-    const UInt_t RENDER                       = ( 1L << 2 );
+    const UInt_t RENDER                       = FT_LOAD_RENDER;
 
     /// Ignore bitmap strikes when loading. Bitmap-only fonts ignore this flag.
     /*
      *  FT_LOAD_NO_SCALE always sets this flag.
      */
-    const UInt_t NO_BITMAP                    = ( 1L << 3 );
+    const UInt_t NO_BITMAP                    = FT_LOAD_NO_BITMAP;
 
     /// Load the glyph for vertical text layout.
     /*
      *  Don't use it as it is problematic currently.
      */
-    const UInt_t VERTICAL_LAYOUT              = ( 1L << 4 );
+    const UInt_t VERTICAL_LAYOUT              = FT_LOAD_VERTICAL_LAYOUT;
 
     /// Indicates that the auto-hinter is preferred over the font's native
     /// hinter.
     /*
      *  See also the note below.
      */
-    const UInt_t FORCE_AUTOHINT               = ( 1L << 5 );
+    const UInt_t FORCE_AUTOHINT               = FT_LOAD_FORCE_AUTOHINT;
 
     /// Indicates that the font driver should crop the loaded bitmap glyph
     /// (i.e., remove all space around its black bits).
     /*
      *  Not all drivers implement this.
      */
-    const UInt_t CROP_BITMAP                  = ( 1L << 6 );
+    const UInt_t CROP_BITMAP                  = FT_LOAD_CROP_BITMAP;
 
     /// Indicates that the font driver should perform pedantic verifications
     /// during glyph loading.
@@ -504,10 +504,7 @@ namespace load
      * partially hinted or distorted glyphs in case a glyph's bytecode is
      * buggy.
      */
-    const UInt_t PEDANTIC                     = ( 1L << 7 );
-
-    /// Ignored. Deprecated.
-    const UInt_t IGNORE_GLOBAL_ADVANCE_WIDTH  = ( 1L << 9 );
+    const UInt_t PEDANTIC                     = FT_LOAD_PEDANTIC;
 
     /// This flag is only used internally.
     /*
@@ -521,14 +518,14 @@ namespace load
      *
      *  This flag implies FT_LOAD_NO_SCALE and FT_LOAD_IGNORE_TRANSFORM.
      */
-    const UInt_t NO_RECURSE                   = ( 1L << 10 );
+    const UInt_t NO_RECURSE                   = FT_LOAD_NO_RECURSE;
 
     /// Indicates that the transform matrix set by FT_Set_Transform should be
     /// ignored.
     /*
      *
      */
-    const UInt_t IGNORE_TRANSFORM             = ( 1L << 11 );
+    const UInt_t IGNORE_TRANSFORM             = FT_LOAD_IGNORE_TRANSFORM;
 
     /// This flag is used with FT_LOAD_RENDER to indicate that you want to
     /// render an outline glyph to a 1-bit monochrome bitmap glyph, with 8
@@ -538,20 +535,20 @@ namespace load
      *  rather use FT_LOAD_TARGET_MONO so that the monochrome-optimized
      *  hinting algorithm is used.
      */
-    const UInt_t MONOCHROME                   = ( 1L << 12 );
+    const UInt_t MONOCHROME                   = FT_LOAD_MONOCHROME;
 
     /// Indicates that the ‘linearHoriAdvance’ and ‘linearVertAdvance’ fields
     /// of FT_GlyphSlotRec should be kept in font units.
     /*
      *  See FT_GlyphSlotRec for details.
      */
-    const UInt_t LINEAR_DESIGN                = ( 1L << 13 );
+    const UInt_t LINEAR_DESIGN                = FT_LOAD_LINEAR_DESIGN;
 
     /// Disable auto-hinter.
     /*
      *  See also the note below.
      */
-    const UInt_t NO_AUTOHINT                  = ( 1L << 15 );
+    const UInt_t NO_AUTOHINT                  = FT_LOAD_NO_AUTOHINT;
 }
 
 
@@ -887,6 +884,19 @@ namespace subglyph_flag
     const UInt32_t _2X2                  = 0x80;
     const UInt32_t USE_MY_METRICS       = 0x200;
 }
+
+
+/// A list of constants used to describe curve tags
+namespace curve_tag
+{
+    const UInt  ON    = FT_CURVE_TAG_ON;
+    const UInt  CONIC = FT_CURVE_TAG_CONIC;
+    const UInt  CUBIC = FT_CURVE_TAG_CUBIC;
+
+    const UInt  DROPOUT_MASK    = 0xE0;
+    const UInt  DROPOUT_SHIFT   = 5;
+}
+
 
 /// A list of bit flags used in the ‘fsType’ field of the OS/2 table in a
 /// TrueType or OpenType font and the ‘FSType’ entry in a PostScript font.
