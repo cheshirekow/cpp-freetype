@@ -27,9 +27,11 @@
 #ifndef CPPFREETYPE_TYPES_H_
 #define CPPFREETYPE_TYPES_H_
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 #include <cstring>
 #include <cstddef>
-
 #include <sigc++/sigc++.h>
 
 /// root namespace for freetype
@@ -41,54 +43,100 @@ extern const unsigned int MAJOR;
 extern const unsigned int MINOR;
 extern const unsigned int PATCH;
 
-typedef unsigned char   Byte_t;     ///< simple typedef unsigned char
-typedef Byte_t*         Bytes_t;    ///< a typedef for constant memory area
-typedef signed char     Char_t;     ///< simple typedef for signed char
-typedef signed int      Int_t;      ///< typedef for int
-typedef unsigned int    UInt_t;     ///< typedef for unsigned int
-typedef signed short    Int16_t;    ///< typedef for 16bit integer
-typedef unsigned short  UInt16_t;   ///< typedef for 16bit unsigned int
-// FIXME: compiler dependent
-typedef signed int      Int32_t;    ///< typedef for 32bit signed int
-// FIXME: compiler dependent
-typedef unsigned int    UInt32_t;   ///< typedef for 32bit unsigned int
-typedef signed short    Short_t;    ///< simlpe typedef for signed short
-typedef unsigned short  UShort_t;   ///< simple typedef for unsigned short
-typedef signed long     Long_t;     ///< simple typedef for signed long
-typedef unsigned long   ULong_t;    ///< simple typedef for unsigned long
-typedef unsigned char   Bool_t;     ///< used for simple booleans,
+typedef FT_Byte         Byte_t;     ///< simple typedef unsigned char
+typedef FT_Bytes        Bytes_t;    ///< a typedef for constant memory area
+typedef FT_Char         Char_t;     ///< simple typedef for signed char
+typedef FT_Int          Int_t;      ///< typedef for int
+typedef FT_UInt         UInt_t;     ///< typedef for unsigned int
+typedef FT_Int16        Int16_t;    ///< typedef for 16bit integer
+typedef FT_UInt16       UInt16_t;   ///< typedef for 16bit unsigned int
+typedef FT_Int32        Int32_t;    ///< typedef for 32bit signed int
+typedef FT_UInt32       UInt32_t;   ///< typedef for 32bit unsigned int
+typedef FT_Short        Short_t;    ///< simlpe typedef for signed short
+typedef FT_UShort       UShort_t;   ///< simple typedef for unsigned short
+typedef FT_Long         Long_t;     ///< simple typedef for signed long
+typedef FT_ULong        ULong_t;    ///< simple typedef for unsigned long
+typedef FT_Bool         Bool_t;     ///< used for simple booleans,
                                     /// 1=true, 0=false
-typedef size_t          Offset_t;   ///< the largest unsigned integer type
+typedef FT_Offset       Offset_t;   ///< the largest unsigned integer type
                                     ///  used to express a file size or
                                     ///  position or a memory block size
-typedef ptrdiff_t       PtrDist_t;  ///< the largest signed integer type
+typedef FT_PtrDist      PtrDist_t;  ///< the largest signed integer type
                                     ///  used to express a distance between
                                     ///  two pointers
-typedef char            String_t;   ///< simple typedef for char
-typedef UInt32_t        Tag_t;      ///< typedef for 32bit tags (as used in
+typedef FT_String       String_t;   ///< simple typedef for char
+typedef FT_Tag          Tag_t;      ///< typedef for 32bit tags (as used in
                                     ///  the SFNT format)
-typedef int             Error_t;    ///< FreeType error code, a value of
+typedef FT_Error        Error_t;    ///< FreeType error code, a value of
                                     ///  0 is always interpreted as a
                                     ///  successful operation
-typedef signed long     Fixed_t;    ///< Used to store 16.16 fixed float
+typedef FT_Fixed        Fixed_t;    ///< Used to store 16.16 fixed float
                                     ///  values, like scaling values or
                                     ///  matrix coefficients
-typedef void*           Pointer_t;  ///< simple typedef for typeless ptr
-typedef signed long     Pos_t;      ///< used to store vectoral coordinates.
+typedef FT_Pointer      Pointer_t;  ///< simple typedef for typeless ptr
+typedef FT_Pos          Pos_t;      ///< used to store vectoral coordinates.
                                     ///  depending on the context these
                                     ///  represent distances in integer
                                     ///  font units, or 16.16, or
                                     ///  26.6 fixed float pixel coords
-typedef signed short    FWord_t;    ///< signed 16bit integer used to
+typedef FT_FWord        FWord_t;    ///< signed 16bit integer used to
                                     ///  store distance in original font
                                     ///  units
-typedef unsigned short  UFWord_t;   ///< unsigned 16bit integer used to
+typedef FT_UFWord       UFWord_t;   ///< unsigned 16bit integer used to
                                     ///  store distance in original font
                                     ///  units
-typedef signed short    F2Dot14_t;  ///< signed 2.14 fixed float type used
+typedef FT_F2Dot14      F2Dot14_t;  ///< signed 2.14 fixed float type used
                                     ///  for unit vectors
-typedef signed long     F26Dot6_t;  ///< signed 26.6 fixed float type used
+typedef FT_F26Dot6      F26Dot6_t;  ///< signed 26.6 fixed float type used
                                     ///  for vectoral pixel coordinates
+
+typedef FT_Byte         Byte;       ///< simple typedef unsigned char
+typedef FT_Bytes        Bytes;      ///< a typedef for constant memory area
+typedef FT_Char         Char;       ///< simple typedef for signed char
+typedef FT_Int          Int;        ///< typedef for int
+typedef FT_UInt         UInt;       ///< typedef for unsigned int
+typedef FT_Int16        Int16;      ///< typedef for 16bit integer
+typedef FT_UInt16       UInt16;     ///< typedef for 16bit unsigned int
+typedef FT_Int32        Int32;      ///< typedef for 32bit signed int
+typedef FT_UInt32       UInt32;     ///< typedef for 32bit unsigned int
+typedef FT_Short        Short;      ///< simlpe typedef for signed short
+typedef FT_UShort       UShort;     ///< simple typedef for unsigned short
+typedef FT_Long         Long;       ///< simple typedef for signed long
+typedef FT_ULong        ULong;      ///< simple typedef for unsigned long
+typedef FT_Bool         Bool;       ///< used for simple booleans,
+                                    /// 1=true, 0=false
+typedef FT_Offset       Offset;     ///< the largest unsigned integer type
+                                    ///  used to express a file size or
+                                    ///  position or a memory block size
+typedef FT_PtrDist      PtrDist;    ///< the largest signed integer type
+                                    ///  used to express a distance between
+                                    ///  two pointers
+typedef FT_String       String;     ///< simple typedef for char
+typedef FT_Tag          Tag;        ///< typedef for 32bit tags (as used in
+                                    ///  the SFNT format)
+typedef FT_Error        Error;      ///< FreeType error code, a value of
+                                    ///  0 is always interpreted as a
+                                    ///  successful operation
+typedef FT_Fixed        Fixed;      ///< Used to store 16.16 fixed float
+                                    ///  values, like scaling values or
+                                    ///  matrix coefficients
+typedef FT_Pointer      Pointer;    ///< simple typedef for typeless ptr
+typedef FT_Pos          Pos;        ///< used to store vectoral coordinates.
+                                    ///  depending on the context these
+                                    ///  represent distances in integer
+                                    ///  font units, or 16.16, or
+                                    ///  26.6 fixed float pixel coords
+typedef FT_FWord        FWord;      ///< signed 16bit integer used to
+                                    ///  store distance in original font
+                                    ///  units
+typedef FT_UFWord       UFWord;     ///< unsigned 16bit integer used to
+                                    ///  store distance in original font
+                                    ///  units
+typedef FT_F2Dot14      F2Dot14;    ///< signed 2.14 fixed float type used
+                                    ///  for unit vectors
+typedef FT_F26Dot6      F26Dot6;    ///< signed 26.6 fixed float type used
+                                    ///  for vectoral pixel coordinates
+
 
 /// namespace wrapper for PixelMode enumeration
 /**

@@ -31,7 +31,8 @@
 
 int main( int argc, char** argv )
 {
-    namespace ft = freetype;
+
+    using namespace freetype;
 
     if(argc < 2 )
     {
@@ -39,8 +40,9 @@ int main( int argc, char** argv )
         return 1;
     }
 
-    ft::Error_t result;
-    ft::Library freetype = ft::init(result);
+    Error_t result;
+    RefPtr<Library> freetype;
+    (freetype,result) = init_e();
 
     if(result)
     {
@@ -51,7 +53,7 @@ int main( int argc, char** argv )
     // artificial scope... we dont want a dangling Face pointer hanging
     // around trying to free itself after we call ft::done
     {
-        ft::Face face     = freetype.new_face( argv[1], 0, result );
+//        ft::Face face     = freetype.new_face( argv[1], 0, result );
 
         if(result)
         {
@@ -62,14 +64,14 @@ int main( int argc, char** argv )
 
         std::cout << "Some info about the font: "
           << "\n      filepath: " << argv[1]
-          << "\n        family: " << face.family_name()
-          << "\n      n glyphs: " << face.num_glyphs()
-          << "\n  units per EM: " << face.units_per_EM()
+//          << "\n        family: " << face.family_name()
+//          << "\n      n glyphs: " << face.num_glyphs()
+//          << "\n  units per EM: " << face.units_per_EM()
           << "\n"
           << std::endl;
     }
 
-    result = ft::done(freetype);
+    result = done(freetype);
     return 0;
 }
 

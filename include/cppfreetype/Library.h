@@ -27,6 +27,11 @@
 #ifndef CPPFREETYPE_LIBRARY_H_
 #define CPPFREETYPE_LIBRARY_H_
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_MODULE_H
+
+#include <cppfreetype/RefPtr.h>
 #include <cppfreetype/types.h>
 #include <cppfreetype/Face.h>
 #include <cppfreetype/Memory.h>
@@ -37,86 +42,34 @@
 namespace freetype
 {
 
+class Library;
 
-/// A handle to a FreeType library instance
-/**
- *  Each ‘library’ is completely independent from the others; it is the ‘root’
- *  of a set of objects like fonts, faces, sizes, etc.
- *
- *  It also embeds a memory manager (see FT_Memory), as well as a scan-line
- *  converter object (see FT_Raster).
- *
- *  For multi-threading applications each thread should have its own
- *  FT_Library object.
- *
- *  @note   The underlying FT_Library object is reference counted, so there
- *          is an appropriate copy and assignment constructor for this class.
- *          As such, you should probably not pass around pointers to a Library
- *          object
- */
-class Library
+/// c++ interface on top of c-object pointer
+class LibraryDelegate
 {
     private:
-        void*   m_ptr;
+        FT_Library  m_ptr;
 
-        void reference();
-        void drop();
+        /// constructable only by RefPtr<Library>
+        LibraryDelegate( FT_Library ptr=0 ):
+            m_ptr(ptr)
+        {}
+
+        /// not cop-constructable
+        LibraryDelegate( const LibraryDelegate& );
+
+        /// not copy-assignable
+        LibraryDelegate& operator=( const LibraryDelegate& );
 
     public:
-        /// wrap constructor, \p ptr must be a FT_Library
-        /**
-         *  @param[in]  ptr         pointer to underlying object which is to
-         *                          be wrapped
-         *  @param[in]  reference   if true, reference count will be
-         *                          incremented (default)
-         */
-        Library( void* ptr=0, bool reference=false );
-
-        /// copy constructor, increments the reference count on the library
-        /// object
-        Library( const Library& other );
-
-        /// assignment operator, decrements the reference count on the current
-        /// underlying library handle, and increments the reference count on
-        /// the other library
-        Library& operator=( const Library& other );
-
-        /// destructor will decrease reference count
-        ~Library();
-
-        /// return underlying pointer
-        void* get_ptr();
-
-        /// returns true if contained pointer is not null
-        bool is_valid();
-
-        /// This function is used to create a new FreeType library instance
-        /// from a given memory object.
-        /**
-         *  It is thus possible to use libraries with distinct memory
-         *  allocators within the same program.
-         *
-         *  Normally, you would call this function (followed by a call to
-         *  FT_Add_Default_Modules or a series of calls to FT_Add_Module)
-         *  instead of FT_Init_FreeType to initialize the FreeType library.
-         *
-         *  Don't use freetype::done but Library::done to destroy a
-         *  library instance.
-         *
-         *  @param[in]  memory  A handle to the original memory object
-         *  @param[out] error   FreeType error code. 0 means success
-         *  @return     A handle to a new library object
-         *  @note       See the discussion of reference counters in the
-         *              description of FT_Reference_Library.
-         */
-        static Library create( Memory memory, Error_t& error );
+        friend class RefPtr<Library>;
 
         /// Add the set of default drivers to a given library object.
         /**
          *  This is only useful when you create a library object with
          *  Library::create (usually to plug a custom memory manager).
          */
-        void add_default_modules();
+//        void add_default_modules();
 
         /// Add a new module to a given library instance.
         /**
@@ -128,7 +81,7 @@ class Library
          *          that name, or if the module requires a version of
          *          FreeType that is too great.
          */
-        Error_t add_module( const ModuleClass& clazz );
+//        Error_t add_module( const ModuleClass& clazz );
 
         /// Find a module by it's name
         /**
@@ -138,7 +91,7 @@ class Library
          *  @note   FreeType's internal modules aren't documented very well,
          *          and you should look up the source code for details.
          */
-        Module get_module( const char* module_name );
+//        Module get_module( const char* module_name );
 
         /// Remove a given module from a library instance
         /**
@@ -148,7 +101,7 @@ class Library
          *  @note   The module object is destroyed by the function in case of
          *          success
          */
-        Error_t remove_module( Module module );
+//        Error_t remove_module( Module module );
 
         /// calls Library::open_face to open a font by it's pathname
         /**
@@ -159,9 +112,9 @@ class Library
          *          than or equal to zro, it must be non-NULL. See
          *          Library::open_face for more details
          */
-        Face new_face( const char*  filepath,
-                        Long_t      face_index,
-                        Error_t&    error );
+//        Face new_face( const char*  filepath,
+//                        Long_t      face_index,
+//                        Error_t&    error );
 
         /// Create a face object from a given resource described by
         /// FT_Open_Args.
@@ -198,14 +151,59 @@ class Library
          *  See the discussion of reference counters in the description of
          *  FT_Reference_Face.
          */
-        Face open_face( const OpenArgs& args,
-                        Long_t          face_index,
-                        Error_t&        error );
-
-
-
+//        Face open_face( const OpenArgs& args,
+//                        Long_t          face_index,
+//                        Error_t&        error );
 
 };
+
+/// traits class for Library, a FreeType library instance
+/**
+ *  Each ‘library’ is completely independent from the others; it is the ‘root’
+ *  of a set of objects like fonts, faces, sizes, etc.
+ *
+ *  It also embeds a memory manager (see FT_Memory), as well as a scan-line
+ *  converter object (see FT_Raster).
+ *
+ *  For multi-threading applications each thread should have its own
+ *  FT_Library object.
+ *
+ *  @note   The underlying FT_Library object is reference counted, so there
+ *          is an appropriate copy and assignment constructor for this class.
+ *          As such, you should probably not pass around pointers to a Library
+ *          object
+ */
+struct Library
+{
+    typedef LibraryDelegate Delegate;
+    typedef FT_Library      cobjptr;
+
+    /// This function is used to create a new FreeType library instance
+    /// from a given memory object.
+    /**
+     *  It is thus possible to use libraries with distinct memory
+     *  allocators within the same program.
+     *
+     *  Normally, you would call this function (followed by a call to
+     *  FT_Add_Default_Modules or a series of calls to FT_Add_Module)
+     *  instead of FT_Init_FreeType to initialize the FreeType library.
+     *
+     *  Don't use freetype::done but Library::done to destroy a
+     *  library instance.
+     *
+     *  @param[in]  memory  A handle to the original memory object
+     *  @param[out] error   FreeType error code. 0 means success
+     *  @return     A handle to a new library object
+     *  @note       See the discussion of reference counters in the
+     *              description of FT_Reference_Library.
+     */
+    //static RefPtr<Library> create( RefPtr<Memory> memory, Error_t& error );
+};
+
+
+
+
+
 
 } // namespace freetype 
 

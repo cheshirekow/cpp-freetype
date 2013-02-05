@@ -33,89 +33,59 @@
 namespace freetype
 {
 
-void Library::reference()
+/// overload for RefPtr<Library>::reference
+template <>
+void RefPtr<Library>::reference()
 {
     if(m_ptr)
-        FT_Reference_Library( (FT_Library)m_ptr );
+        FT_Reference_Library( m_ptr );
 }
 
-void Library::drop()
+template <>
+void RefPtr<Library>::dereference()
 {
     if(m_ptr)
-        FT_Done_Library( (FT_Library)m_ptr );
+        FT_Done_Library( m_ptr );
 }
 
-Library::Library( void* ptr, bool reference )
-{
-    m_ptr = ptr;
-    if(reference)
-        this->reference();
-}
 
-Library::Library( const Library& other )
-{
-    m_ptr = other.m_ptr;
-    reference();
-}
 
-Library& Library::operator=( const Library& other )
-{
-    drop();
-    m_ptr = other.m_ptr;
-    reference();
 
-    return *this;
-}
-
-Library::~Library()
-{
-    drop();
-}
-
-void* Library::get_ptr()
-{
-    return m_ptr;
-}
-
-bool Library::is_valid()
-{
-    return (m_ptr != 0);
-}
-
-Library Library::create( Memory memory, Error_t& error )
-{
-    FT_Library ptr;
-    error = FT_New_Library( (FT_Memory) memory.get_ptr(), &ptr );
-    return Library( (void*) ptr );
-}
-
-void Library::add_default_modules()
-{
-    FT_Add_Default_Modules( (FT_Library) m_ptr );
-}
-
-Module Library::get_module( const char* module_name )
-{
-    return Module( (void*)
-        FT_Get_Module( (FT_Library)m_ptr, module_name )
-    );
-}
-
-Error_t Library::remove_module( Module module )
-{
-    return FT_Remove_Module(
-            (FT_Library)m_ptr,
-            (FT_Module) module.get_ptr() );
-}
-
-Face Library::new_face( const char* filepath,
-                        Long_t      face_index,
-                        Error_t&    error )
-{
-    FT_Face ptr;
-    error = FT_New_Face( (FT_Library)m_ptr, filepath, face_index, &ptr );
-    return Face(ptr);
-}
+//
+//Library Library::create( Memory memory, Error_t& error )
+//{
+//    FT_Library ptr;
+//    error = FT_New_Library( (FT_Memory) memory.get_ptr(), &ptr );
+//    return Library( (void*) ptr );
+//}
+//
+//void Library::add_default_modules()
+//{
+//    FT_Add_Default_Modules( (FT_Library) m_ptr );
+//}
+//
+//Module Library::get_module( const char* module_name )
+//{
+//    return Module( (void*)
+//        FT_Get_Module( (FT_Library)m_ptr, module_name )
+//    );
+//}
+//
+//Error_t Library::remove_module( Module module )
+//{
+//    return FT_Remove_Module(
+//            (FT_Library)m_ptr,
+//            (FT_Module) module.get_ptr() );
+//}
+//
+//Face Library::new_face( const char* filepath,
+//                        Long_t      face_index,
+//                        Error_t&    error )
+//{
+//    FT_Face ptr;
+//    error = FT_New_Face( (FT_Library)m_ptr, filepath, face_index, &ptr );
+//    return Face(ptr);
+//}
 
 
 

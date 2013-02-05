@@ -27,6 +27,8 @@
 #ifndef CPPFREETYPE_CPPFREETYPE_H_
 #define CPPFREETYPE_CPPFREETYPE_H_
 
+#include <cppfreetype/AssignmentPair.h>
+#include <cppfreetype/RefPtr.h>
 #include <cppfreetype/types.h>
 #include <cppfreetype/Face.h>
 #include <cppfreetype/Memory.h>
@@ -57,8 +59,35 @@ namespace freetype
      *          not the reference count. Therefore, make sure you call
      *          freetype::done on the main library instance prior to it
      *          going out of scope
+     *
+     * @note    this version silently ignores any error result, see init_e
+     *          for a function which returns an error code as well
      */
-    Library init(Error_t& error);
+    RefPtr<Library> init();
+
+    /// Initialize a new FreeType library object. The set of modules that are
+    /// registered by this function is determined at build time.
+    /**
+     * @param[out]  error FreeType error code. 0 means success.
+     * @return      A handle to a new library object
+     *
+     * @note    In case you want to provide your own memory allocating
+     *          routines, use Library::new instead, followed by a call to
+     *          Library::add_default_modules (or a series of calls to
+     *          Library::add_module).
+     *
+     * @note    For multi-threading applications each thread should have its
+     *          own Library object.
+     *
+     * @note    when using this function, it is expected that the library is
+     *          destroyed with freetype::done. This is becasue freetype::init
+     *          creates a memory manager and gives it a reference count, and
+     *          when we call ~Library it only decrements the library count,
+     *          not the reference count. Therefore, make sure you call
+     *          freetype::done on the main library instance prior to it
+     *          going out of scope
+     */
+    RValuePair< RefPtr<Library>, Error > init_e();
 
     /// Destroy a given FreeType library object and all of its children,
     /// including resources, drivers, faces, sizes, etc.
@@ -72,7 +101,7 @@ namespace freetype
      *          underlying pointer to null, so that the handle becomes
      *          invalid
      */
-    Error_t done(Library& library);
+    Error_t done(RefPtr<Library>& library);
 
 
 }
