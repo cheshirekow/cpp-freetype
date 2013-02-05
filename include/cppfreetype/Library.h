@@ -182,6 +182,7 @@ class LibraryDelegate
 struct Library
 {
     typedef LibraryDelegate Delegate;
+    typedef FT_Library      Storage;
     typedef FT_Library      cobjptr;
 
     /// This function is used to create a new FreeType library instance

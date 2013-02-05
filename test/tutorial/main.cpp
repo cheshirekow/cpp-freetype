@@ -134,8 +134,8 @@ int main( int argc, char** argv )
                                << (char)( (glyphFormat >> 16 ) & 0xff )
                                << (char)( (glyphFormat >> 8  ) & 0xff )
                                << (char)( (glyphFormat >> 0  ) & 0xff )
-            << "\n contours: " << (*face)->glyph->outline.n_contours
-            << "\n   points: " << (*face)->glyph->outline.n_points
+            << "\n contours: " << (*face->glyph())->outline.n_contours
+            << "\n   points: " << (*face->glyph())->outline.n_points
             << std::endl;
 
         int j = 0;
@@ -152,7 +152,7 @@ int main( int argc, char** argv )
                           << pt.x << ","
                           << pt.y << ")  "
                           << ( on ? "on" : "off") << "  "
-                          << ( on && cub ? "cubic" : "quadradic");
+                          << ( on ? " " : (cub ? "cubic" : "quadradic") );
 
             }
         }

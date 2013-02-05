@@ -41,15 +41,16 @@ class RefPtr
     public:
         typedef typename Traits::cobjptr    cobjptr;
         typedef typename Traits::Delegate   Delegate;
+        typedef typename Traits::Storage    Storage;
 
     private:
-        cobjptr m_ptr;
+        Storage m_ptr;
 
         /// increase reference count by one, see specializations
-        void reference();
+        void reference(){}
 
         /// decrease reference count by one, see specializations
-        void dereference();
+        void dereference(){}
 
 
     public:
@@ -90,7 +91,8 @@ class RefPtr
             m_ptr = 0;
         }
 
-        /// return the stored pointer, subverting reference safety
+        /// return the stored pointer, subverting reference safety, see
+        /// specializations if Storage is not the same as cobjptr
         cobjptr subvert()
         {
             return m_ptr;

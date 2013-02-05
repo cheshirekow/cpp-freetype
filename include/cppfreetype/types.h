@@ -247,6 +247,8 @@ namespace glyphformat
     };
 }
 
+typedef glyphformat::GlyphFormat GlyphFormat;
+
 /// Describe a function used to destroy the ‘client’ data of any FreeType
 /// object. See the description of the FT_Generic type for details of usage.
 /**

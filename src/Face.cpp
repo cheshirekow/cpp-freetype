@@ -224,6 +224,11 @@ const Short& FaceDelegate::underline_thickness() const
     return m_ptr->underline_thickness;
 }
 
+RefPtr<GlyphSlot> FaceDelegate::glyph()
+{
+    return RefPtr<GlyphSlot>(m_ptr->glyph,true);
+}
+
 bool FaceDelegate::has_horizontal()
 {
     return FT_HAS_HORIZONTAL( m_ptr );

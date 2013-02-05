@@ -33,6 +33,7 @@
 
 #include <cppfreetype/types.h>
 #include <cppfreetype/RefPtr.h>
+#include <cppfreetype/GlyphSlot.h>
 
 namespace freetype
 {
@@ -155,7 +156,7 @@ class FaceDelegate
         const Short&    underline_thickness() const;
 
         /// The face's associated glyph slot(s).
-        //FT_GlyphSlot      glyph;
+        RefPtr<GlyphSlot>   glyph();
 
         /// The current active size for this face.
         //FT_Size            size();
@@ -463,6 +464,7 @@ while ( gindex != 0 )
 struct Face
 {
     typedef FaceDelegate    Delegate;
+    typedef FT_Face         Storage;
     typedef FT_Face         cobjptr;
 };
 

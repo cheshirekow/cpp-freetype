@@ -17,6 +17,7 @@ set(LIBS ${LIBS}
 add_library( ${CMAKE_PROJECT_NAME}
                 cppfreetype.cpp
                 Face.cpp
+                GlyphSlot.cpp
                 Library.cpp
                 Memory.cpp
                 Module.cpp
