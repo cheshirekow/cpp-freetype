@@ -68,6 +68,11 @@ RefPtr<GlyphSlot> GlyphSlotDelegate::next()
     return RefPtr<GlyphSlot>( m_ptr->next, true );
 }
 
+RefPtr<Outline> GlyphSlotDelegate::outline()
+{
+    return RefPtr<Outline>( &(m_ptr->outline) );
+}
+
 void GlyphSlotDelegate::linearHoriAdvance( Fixed val )
 {
     m_ptr->linearHoriAdvance = val;

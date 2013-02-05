@@ -33,7 +33,7 @@
 
 namespace freetype {
 
-/// pointer ot a reference counted object, auto destruct when reference
+/// pointer to a reference counted object, auto destruct when reference
 /// count is zero
 template< class Traits >
 class RefPtr

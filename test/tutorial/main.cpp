@@ -134,25 +134,26 @@ int main( int argc, char** argv )
                                << (char)( (glyphFormat >> 16 ) & 0xff )
                                << (char)( (glyphFormat >> 8  ) & 0xff )
                                << (char)( (glyphFormat >> 0  ) & 0xff )
-            << "\n contours: " << (*face->glyph())->outline.n_contours
-            << "\n   points: " << (*face->glyph())->outline.n_points
+            << "\n contours: " << face->glyph()->outline()->n_contours()
+            << "\n   points: " << face->glyph()->outline()->n_points()
             << std::endl;
 
-        int j = 0;
-        for(int i=0; i < (*face)->glyph->outline.n_contours; i++)
+
+        ContourIterator ic = face->glyph()->outline()->begin();
+        PointIterator   ip;
+
+        int i=0;
+        for(; !ic.done(); ++ic)
         {
-            std::cout << "\n\nContour: " << i << "\n";
-            for( ;j < (*face)->glyph->outline.contours[i]; j++)
+            std::cout << "\n\nContour: " << i++ << "\n";
+            for( ip = ic->begin(); ip != ic->end(); ++ip )
             {
-                FT_Vector pt = (*face)->glyph->outline.points[j];
-                char      tag= (*face)->glyph->outline.tags[j];
-                bool      on = (tag & curve_tag::ON);
-                bool      cub= (tag & curve_tag::CUBIC);
                 std::cout << "\n   ("
-                          << pt.x << ","
-                          << pt.y << ")  "
-                          << ( on ? "on" : "off") << "  "
-                          << ( on ? " " : (cub ? "cubic" : "quadradic") );
+                          << ip->x() << ","
+                          << ip->y() << ")  "
+                          << ( ip->on() ? "on" : "off") << "  ";
+                if( ip->off() )
+                    std::cout << (ip->cubic() ? "cubic" : "quadradic");
 
             }
         }

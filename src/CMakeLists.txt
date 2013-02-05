@@ -23,6 +23,7 @@ add_library( ${CMAKE_PROJECT_NAME}
                 Module.cpp
                 ModuleClass.cpp
                 OpenArgs.cpp
+                Outline.cpp
                 SizeRequest.cpp ) 
                 
                 

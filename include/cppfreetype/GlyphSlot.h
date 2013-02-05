@@ -33,6 +33,7 @@
 
 #include <cppfreetype/types.h>
 #include <cppfreetype/RefPtr.h>
+#include <cppfreetype/Outline.h>
 
 namespace freetype {
 
@@ -65,6 +66,8 @@ class GlyphSlotDelegate
         RefPtr<Library>     library();
         RefPtr<Face>        face();
         RefPtr<GlyphSlot>   next();
+
+        RefPtr<Outline>     outline();
 
         void linearHoriAdvance( Fixed );
         Fixed linearHoriAdvance() const;
