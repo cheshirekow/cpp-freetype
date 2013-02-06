@@ -29,7 +29,6 @@
 
 #include <cppfreetype/types.h>
 #include <cppfreetype/Module.h>
-#include <cppfreetype/Parameter.h>
 
 namespace freetype
 {
@@ -95,7 +94,7 @@ class OpenArgs
         Int_t&          num_params();
 
         /// Extra parameters passed to the font driver when opening a new face.
-        Parameter*&     params();
+        //Parameter*&     params();
 };
 
 } // namespace freetype 

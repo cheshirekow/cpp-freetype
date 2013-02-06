@@ -24,7 +24,6 @@ set( LIBRARY_SOURCES
         ModuleClass.cpp
         OpenArgs.cpp
         Outline.cpp
-        SizeRequest.cpp
         Untag.cpp )
 
 add_library( ${CMAKE_PROJECT_NAME} SHARED
