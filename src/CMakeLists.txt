@@ -13,22 +13,27 @@ set(LIBS ${LIBS}
     ${Freetype2_LIBRARIES} 
     ${SigC++_LIBRARIES}
     )
+    
+set( LIBRARY_SOURCES
+        cppfreetype.cpp
+        Face.cpp
+        GlyphSlot.cpp
+        Library.cpp
+        Memory.cpp
+        Module.cpp
+        ModuleClass.cpp
+        OpenArgs.cpp
+        Outline.cpp
+        SizeRequest.cpp
+        Untag.cpp )
 
-add_library( ${CMAKE_PROJECT_NAME}
-                cppfreetype.cpp
-                Face.cpp
-                GlyphSlot.cpp
-                Library.cpp
-                Memory.cpp
-                Module.cpp
-                ModuleClass.cpp
-                OpenArgs.cpp
-                Outline.cpp
-                SizeRequest.cpp
-                Untag.cpp ) 
+add_library( ${CMAKE_PROJECT_NAME} SHARED
+             ${LIBRARY_SOURCES}    ) 
                 
+add_library( ${CMAKE_PROJECT_NAME}_static STATIC
+             ${LIBRARY_SOURCES} ) 
                 
-INSTALL( TARGETS ${CMAKE_PROJECT_NAME}
+INSTALL( TARGETS ${CMAKE_PROJECT_NAME} ${CMAKE_PROJECT_NAME}_static
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib

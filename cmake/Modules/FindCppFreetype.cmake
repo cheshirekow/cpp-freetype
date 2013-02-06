@@ -17,9 +17,14 @@ find_library(CppFreetype_LIBRARY
   NAMES cppfreetype
 )
 
+# Finally the static library
+find_library(CppFreetype_STATIC_LIBRARY
+  NAMES cppfreetype_static
+)
+
 # Set the include dir variables and the libraries and let libfind_process do the rest.
 # NOTE: Singular variables for this library, plural for libraries this this lib depends on.
 set(CppFreetype_PROCESS_INCLUDES CppFreetype_INCLUDE_DIR)
-set(CppFreetype_PROCESS_LIBS CppFreetype_LIBRARY)
+set(CppFreetype_PROCESS_LIBS CppFreetype_LIBRARY CppFreetype_STATIC_LIBRARY)
 libfind_process(CppFreetype)
 
