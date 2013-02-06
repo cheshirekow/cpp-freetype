@@ -27,4 +27,4 @@ configure_file(
     )
 
 # use Jan Woetzel's doxygen doc target
-include("${CMAKE_MODULE_PATH}/TargetDoc.cmake" OPTIONAL)
+include(TargetDoc)
