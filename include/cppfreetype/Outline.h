@@ -60,6 +60,7 @@ struct PointIterator:
     PointReference* operator->();
     PointReference& operator*();
     PointIterator& operator++();
+    PointIterator& operator--();
     bool operator!=( const PointIterator& other );
 };
 
@@ -80,6 +81,8 @@ struct ContourIterator:
     ContourReference* operator->();
     ContourReference& operator*();
     ContourIterator& operator++();
+    ContourIterator& operator--();
+    UInt16_t    size();
     bool done();
     bool operator!=( const ContourIterator& other );
 };

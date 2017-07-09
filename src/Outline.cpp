@@ -45,7 +45,7 @@ Pos PointReference::y()
 
 bool PointReference::on()
 {
-    return m_outline->tags[m_i] & curve_tag::ON;
+    return (m_outline->tags[m_i] & 0x03) == curve_tag::ON;
 }
 
 bool PointReference::off()
@@ -55,12 +55,12 @@ bool PointReference::off()
 
 bool PointReference::conic()
 {
-    return m_outline->tags[m_i] & curve_tag::CONIC;
+    return (m_outline->tags[m_i] & 0x03) == curve_tag::CONIC;
 }
 
 bool PointReference::cubic()
 {
-    return m_outline->tags[m_i] & curve_tag::CUBIC;
+    return (m_outline->tags[m_i] & 0x03) == curve_tag::CUBIC;
 }
 
 PointIterator::PointIterator( FT_Outline* outline, Int i):
@@ -80,6 +80,12 @@ PointReference& PointIterator::operator*()
 PointIterator& PointIterator::operator++()
 {
     ++m_i;
+    return *this;
+}
+
+PointIterator& PointIterator::operator--()
+{
+    --m_i;
     return *this;
 }
 
@@ -103,7 +109,7 @@ PointIterator ContourReference::begin()
 
 PointIterator ContourReference::end()
 {
-    return PointIterator(m_outline,m_outline->contours[m_i]);
+    return PointIterator(m_outline,m_outline->contours[m_i]+1);
 }
 
 ContourIterator::ContourIterator( FT_Outline* outline, Int_t i ):
@@ -124,6 +130,20 @@ ContourIterator& ContourIterator::operator++()
 {
     ++m_i;
     return *this;
+}
+
+ContourIterator& ContourIterator::operator--()
+{
+    --m_i;
+    return *this;
+}
+
+UInt16_t ContourIterator::size()
+{
+    if( m_i == 0 )
+        return m_outline->contours[0]+1;
+    else
+        return m_outline->contours[m_i] - m_outline->contours[m_i-1];
 }
 
 bool ContourIterator::done()
